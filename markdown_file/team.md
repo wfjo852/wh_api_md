@@ -2,17 +2,17 @@
 
 ## 목차
 
-| 내용                            | slug                            | 서버 구현 | 웹 적용 |
-| :------------------------------ | :------------------------------ | :-------: | :-----: |
-| 1. [팀 목록 조회]               | /api/team/list                  |    GET    |    O    |
-| 2. [팀 등록]                    | /api/team/create                |   POST    |    O    |
-| 3. [팀 정보 엑셀 내보내기]      | /api/team/export                |     X     |    X    |
-| 4. [팀 참여 가능한 이용자 목록] | /api/team/{team_idx}/user/list  |    GET    |    O    |
-| 5. [팀 활성화]                  | /api/team/{team_idx}/activate   |   POST    |    O    |
-| 6. [팀 비활성화]                | /api/team/{team_idx}/deactivate |   POST    |    O    |
-| 7. [팀 삭제]                    | /api/team/{team_idx}/delete     |   POST    |    O    |
-| 8. [팀 정보 수정]               | /api/team/{team_idx}/update     |   POST    |    O    |
-| 9. [팀 구성원 변경하기]         | /api/team/{team_idx}/user/add   |   POST    |    O    |
+| 내용                            | slug                            | 서버 구현 | 웹 적용 | 웹훅 | 로그 |
+| :------------------------------ | :------------------------------ | :-------: | :-----: | :--: | :--: |
+| 1. [팀 목록 조회]               | /api/team/list                  |    GET    |    O    |  -   |  -   |
+| 2. [팀 등록]                    | /api/team/create                |   POST    |    O    |  -   |  -   |
+| 3. [팀 정보 엑셀 내보내기]      | /api/team/export                |     X     |    X    |  -   |  -   |
+| 4. [팀 참여 가능한 이용자 목록] | /api/team/{team_idx}/user/list  |    GET    |    O    |  -   |  -   |
+| 5. [팀 활성화]                  | /api/team/{team_idx}/activate   |   POST    |    O    |  -   |  -   |
+| 6. [팀 비활성화]                | /api/team/{team_idx}/deactivate |   POST    |    O    |  -   |  -   |
+| 7. [팀 삭제]                    | /api/team/{team_idx}/delete     |   POST    |    O    |  -   |  -   |
+| 8. [팀 정보 수정]               | /api/team/{team_idx}/update     |   POST    |    O    |  -   |  -   |
+| 9. [팀 구성원 변경하기]         | /api/team/{team_idx}/user/add   |   POST    |    O    |  -   |  -   |
 
 ---
 
@@ -56,60 +56,60 @@
 	"data": {
 		"teams": [
 			{
-				"team_idx": "1",
+				"idx": "1",
 				"name": "team1",
 				"description": "설명1",
-				"user_list": [
+				"users": [
 					{
-						"user_idx": "1",
+						"idx": "1",
 						"name": "c2monster"
 					}
 				],
 				"is_on": "1"
 			},
 			{
-				"team_idx": "2",
+				"idx": "2",
 				"name": "team #2",
 				"description": "설명2",
-				"user_list": [
+				"users": [
 					{
-						"user_idx": "2",
+						"idx": "2",
 						"name": "Mio Ito"
 					},
 					{
-						"user_idx": "1",
+						"idx": "1",
 						"name": "c2monster"
 					},
 					{
-						"user_idx": "5",
+						"idx": "5",
 						"name": "\ubc15 252883559"
 					}
 				],
 				"is_on": "1"
 			},
 			{
-				"team_idx": "3",
+				"idx": "3",
 				"name": "team 333",
 				"description": "설명3",
-				"user_list": [
+				"users": [
 					{
-						"user_idx": "2",
+						"idx": "2",
 						"name": "Mio Ito"
 					},
 					{
-						"user_idx": "1",
+						"idx": "1",
 						"name": "c2monster"
 					}
 				],
 				"is_on": "1"
 			},
 			{
-				"team_idx": "4",
+				"idx": "4",
 				"name": "t^4",
 				"description": "설명4",
-				"user_list": [
+				"users": [
 					{
-						"user_idx": "2",
+						"idx": "2",
 						"name": "Mio Ito"
 					}
 				],
@@ -141,13 +141,18 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "팀 정보가 등록 되었습니다."
-	},
-	"data": {
-		"team_idx": "1"
-	}
+    "error": {
+        "code": 200,
+        "message": "The Team is added."
+    },
+    "data": {
+        "team": {
+            "idx": "6",
+            "name": "zxv",
+            "pos": "5",
+            "description": "zxcv"
+        }
+    }
 }
 ```
 
@@ -205,16 +210,16 @@
 	"data": {
 		"users": [
 			{
-				"name": "c2m",
-				"user_idx": "1"
+				"idx": "1",
+				"name": "c2m"
 			},
 			{
-				"name": "c3m",
-				"user_idx": "2"
+				"idx": "2",
+				"name": "c3m"
 			},
 			{
-				"name": "c4m",
-				"user_idx": "3"
+				"idx": "3",
+				"name": "c4m"
 			}
 		],
 		"user_idx_with_team": ["1", "2"],
@@ -253,7 +258,7 @@
 
 ---
 
-## 6. 팀 비활성화 (/api/team/{team_idx}/deactivate) <a id="team-deactivate"></a>
+## 6. 팀 비활성화 <a id="team-deactivate"></a>
 
 ### `POST /api/team/{team_idx}/deactivate`
 
@@ -281,7 +286,7 @@
 
 ---
 
-## 7. 팀 삭제 (/api/team/{team_idx}/delete) <a id="team-delete"></a>
+## 7. 팀 삭제 <a id="team-delete"></a>
 
 ### `POST /api/team/{team_idx}/delete`
 
@@ -309,7 +314,7 @@
 
 ---
 
-## 8. 팀 정보 수정 (/api/team/{team_idx}/update) <a id="team-update"></a>
+## 8. 팀 정보 수정 <a id="team-update"></a>
 
 ### `POST /api/team/{team_idx}/update`
 
@@ -342,7 +347,7 @@
 
 ---
 
-## 9. 팀 구성원 변경하기 (/api/team/{team_idx}/user/add) <a id="team-add-user"></a>
+## 9. 팀 구성원 변경하기 <a id="team-add-user"></a>
 
 ### `POST /api/team/{team_idx}/user/add`
 
@@ -369,7 +374,7 @@ var data_to_send = [];
 for (i = 0; i < team_idxs.length; i++) {
 	data_to_send.push({
 		name: "user_idx[]",
-		value: users_idxs[i]
+		value: users_idxs[i],
 	});
 }
 console.log(data_to_send);

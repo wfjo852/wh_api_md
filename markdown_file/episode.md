@@ -4,14 +4,15 @@
 
 ## 목차
 
-| 내용                    | slug                                                        | 서버 구현 | 웹 적용 |
-| :---------------------- | :---------------------------------------------------------- | :-------: | :-----: |
-| 1. [에피소드 목록 조회] | /api/project/{project_idx}/episode/list[/{detail}]          |    GET    |    O    |
-| 2. [에피소드 등록]      | /api/project/{project_idx}/episode/create                   |   POST    |    O    |
-| 3. [에피소드 정보 수정] | /api/project/{project_idx}/episode/{episode_idx}/update     |   POST    |    O    |
-| 4. [에피소드 삭제]      | /api/project/{project_idx}/episode/{episode_idx}/delete     |   POST    |    O    |
-| 5. [에피소드 활성화]    | /api/project/{project_idx}/episode/{episode_idx}/activate   |   POST    |    O    |
-| 6. [에피소드 비활성화]  | /api/project/{project_idx}/episode/{episode_idx}/deactivate |   POST    |    O    |
+| 내용                    | slug                                                        | 서버 구현 | 웹 적용 |  웹훅  | 로그 |
+| :---------------------- | :---------------------------------------------------------- | :-------: | :-----: | :----: | :--: |
+| 1. [에피소드 목록 조회] | /api/project/{project_idx}/episode/list[/{detail}]          |    GET    |    O    |   -    |  -   |
+| 2. [에피소드 등록]      | /api/project/{project_idx}/episode/create                   |   POST    |    O    | hooked |  O   |
+| 3. [에피소드 정보 수정] | /api/project/{project_idx}/episode/{episode_idx}/update     |   POST    |    O    |   -    |  O   |
+| 4. [에피소드 삭제]      | /api/project/{project_idx}/episode/{episode_idx}/delete     |   POST    |    O    |   -    |  O   |
+| 5. [에피소드 활성화]    | /api/project/{project_idx}/episode/{episode_idx}/activate   |   POST    |    O    |   -    |  -   |
+| 6. [에피소드 비활성화]  | /api/project/{project_idx}/episode/{episode_idx}/deactivate |   POST    |    O    |   -    |  -   |
+| 7. [에피소드 검증]      | /api/episode/validate                                       |  X POST   |    X    |   -    |  -   |
 
 ---
 
@@ -49,16 +50,16 @@
 	"data": {
 		"episodes": [
 			{
-				"episode_idx": "1",
+				"idx": "1",
 				"name": "ep01",
 				"description": "ep01",
-				"episode_order": "1"
+				"order": "1"
 			},
 			{
-				"episode_idx": "2",
+				"idx": "2",
 				"name": "ep02",
 				"description": "ep01",
-				"episode_order": "2"
+				"order": "2"
 			}
 		]
 	}
@@ -76,7 +77,7 @@
 	"data": {
 		"episodes": [
 			{
-				"episode_idx": "1",
+				"idx": "1",
 				"name": "ep01",
 				"episode_order": "1",
 				"description": "에피소드1화",
@@ -90,8 +91,8 @@
 				},
 				"sequences": [
 					{
-						"sequence_idx": "1",
-						"sequence_name": "s0010",
+						"idx": "1",
+						"name": "s0010",
 						"description": "C2Monster 사무실 대화장면",
 						"shot_count": "256",
 						"duration_count": "1356",
@@ -102,8 +103,8 @@
 						}
 					},
 					{
-						"sequence_idx": "2",
-						"sequence_name": "s0020",
+						"idx": "2",
+						"name": "s0020",
 						"description": "C2monster 사무실 앞 ",
 						"shot_count": "156",
 						"duration_count": "892",
@@ -114,8 +115,8 @@
 						}
 					},
 					{
-						"sequence_idx": "3",
-						"sequence_name": "s0030",
+						"idx": "3",
+						"name": "s0030",
 						"description": "엘레베이터 앞 ",
 						"shot_count": "128",
 						"duration_count": "716",
@@ -128,7 +129,7 @@
 				]
 			},
 			{
-				"episode_idx": "2",
+				"idx": "2",
 				"name": "ep02",
 				"episode_order": "2",
 				"description": "에피소드2화",
@@ -142,8 +143,8 @@
 				},
 				"sequences": [
 					{
-						"sequence_idx": "4",
-						"sequence_name": "s0010",
+						"idx": "4",
+						"name": "s0010",
 						"description": "계단 대화",
 						"shot_count": "0",
 						"duration_count": 0,
@@ -154,8 +155,8 @@
 						}
 					},
 					{
-						"sequence_idx": "5",
-						"sequence_name": "s0020",
+						"idx": "5",
+						"name": "s0020",
 						"description": "옥상 대사씬",
 						"shot_count": "0",
 						"duration_count": 0,
@@ -178,6 +179,11 @@
 
 ### `POST /api/project/{project_idx}/episode/create`
 
+### Webhook
+
+- event: episode
+- action: create
+
 ### permission
 
 - `permission.update_project`
@@ -199,7 +205,9 @@
 		"message": "에피소드가 생성 되었습니다."
 	},
 	"data": {
-		"episode_idx": "3"
+		"episode": {
+			"idx": "3"
+		}
 	}
 }
 ```
@@ -216,12 +224,13 @@
 
 ### request
 
-| param        | type  |  data   | required | desc |
-| ------------ | :---: | :-----: | :------: | ---- |
-| project_idx  | path  | integer |    O     |      |
-| episode_idx  | path  | integer |    O     |      |
-| episode_name | query | string  |    O     |      |
-| description  | query | string  |    X     |      |
+| param       | type  |  data   | required | desc             |
+| ----------- | :---: | :-----: | :------: | ---------------- |
+| project_idx | path  | integer |    O     |                  |
+| episode_idx | path  | integer |    O     |                  |
+| column      | query | string  |    O     |                  |
+| old_val     | query | string  |    O     | 공백일 수는 있음 |
+| new_val     | query | string  |    O     | 공백일 수는 있음 |
 
 ### response
 
@@ -231,15 +240,21 @@
 		"code": 200,
 		"message": "에피소드 정보가 수정됐습니다."
 	},
-	"data": {}
+	"data": {
+		"episode": {
+			"idx": "4",
+			"column": "description",
+			"value": "until 4"
+		}
+	}
 }
 ```
 
 ---
 
-## 4. 에피소드 삭제 (/api/project/{project_idx}/episode/{episode_idx}/delete) <a id="#project-episode-delete"></a>
+## 4. 에피소드 삭제 <a id="#project-episode-delete"></a>
 
-### `POST /api/project/{project_idx}/episode/{episode_idx}/update`
+### `POST /api/project/{project_idx}/episode/{episode_idx}/delete`
 
 ### permission
 
@@ -323,6 +338,41 @@
 
 ---
 
+## 7. 에피소드 검증 <a id="episode-validate"></a>
+
+### `POST /api/episode/validate`
+
+### permission
+
+- `permission.update_project`
+
+### request
+
+| param        | type |  data  | required | desc |
+| ------------ | :--: | :----: | :------: | ---- |
+| project_name | path | string |    O     |      |
+| episode_name | path | string |    O     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": {
+		"episode": {
+			"idx": 7,
+			"name": "ep01",
+			"description": ""
+		}
+	}
+}
+```
+
+---
+
 ## 끝
 
 [에피소드 목록 조회]: #project-episode-list
@@ -331,3 +381,4 @@
 [에피소드 삭제]: #project-episode-delete
 [에피소드 활성화]: #project-shot-episode-activate
 [에피소드 비활성화]: #project-shot-episode-deactivate
+[에피소드 검증]: #episode-validate

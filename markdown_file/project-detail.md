@@ -4,16 +4,23 @@
 
 ## 목차
 
-| 내용                                 | slug                                                | 서버 구현 | 웹 적용 |
-| :----------------------------------- | :-------------------------------------------------- | :-------: | :-----: |
-| 1. [태스크타입 할당 조회]            | /api/project/{project_idx}/tasktype/{which}/list    |    GET    |    O    |
-| 2. [태스크타입 재할당]               | /api/project/{project_idx}/tasktype/{which}/update  |   POST    |    O    |
-| 3. [프로젝트 내 상태 코드 할당 조회] | /api/project/{project_idx}/status/allocation/list   |    GET    |    O    |
-| 4. [프로젝트 내 상태 코드 재할당]    | /api/project/{project_idx}/status/allocation/update |   POST    |    O    |
-| 5. [이용자 할당 조회]                | /api/project/{project_idx}/user/allocation/list     |    GET    |    O    |
-| 6. [이용자 재할당]                   | /api/project/{project_idx}/user/allocation/update   |   POST    |    O    |
-| 7. [샷/에셋 커스텀 컬럼 목록 조회]   | /api/project/{project_idx}/{which}/custom/list      |    GET    |    O    |
-| 8. [샷/에셋 커스텀 컬럼 정보 수정]   | /api/project/{project_idx}/{which}/custom/update    |   POST    |    O    |
+| 내용                                                             | slug                                                            | 서버 구현 | 웹 적용 | 웹훅 | 로그 |
+|:-----------------------------------------------------------------|:----------------------------------------------------------------|:---------:|:-------:|:----:|:----:|
+| 1. [태스크타입 할당 목록 조회]                                   | /api/project/{project_idx}/tasktype/{which}/allocation/list     |    GET    |    O    |  -   |  -   |
+| 2. [태스크타입 재할당]                                           | /api/project/{project_idx}/tasktype/{which}/allocation/update   |   POST    |    O    |  -   |  -   |
+| 3. [상태 코드 할당 목록 조회]                                    | /api/project/{project_idx}/status/allocation/list               |    GET    |    O    |  -   |  -   |
+| 4. [상태 코드 재할당]                                            | /api/project/{project_idx}/status/allocation/update             |   POST    |    O    |  -   |  -   |
+| 5. [이용자 할당 조회]                                            | /api/project/{project_idx}/user/allocation/list                 |    GET    |    O    |  -   |  -   |
+| 6. [이용자 재할당]                                               | /api/project/{project_idx}/user/allocation/update               |   POST    |    O    |  -   |  -   |
+| 7. [에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 목록 조회] | /api/project/{project_idx}/{which}/custom/list                  |    GET    |    O    |  -   |  -   |
+| 8. [에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 정보 수정] | /api/project/{project_idx}/{which}/custom/update                |   POST    |    O    |  -   |  -   |
+| 9. [에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 생성]      | /api/project/{project_idx}/{which}/custom/create                |   POST    |    O    |  -   |  -   |
+| 10. [에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 삭제]     | /api/project/{project_idx}/{which}/custom/delete                |   POST    |    O    |  -   |  -   |
+| 11. [에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 활성화]        | /api/project/{project_idx}/{which}/custom/activate              |   POST    |    O    |  -   |  -   |
+| 12. [에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 비활성화]      | /api/project/{project_idx}/{which}/custom/deactivate            |   POST    |    O    |  -   |  -   |
+| 13. [에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 순서 변경]     | /api/project/{project_idx}/{which}/custom/order                 |   POST    |    O    |  -   |  -   |
+| 14. [태스크타입 할당 순서 수정]                                  | /api/project/{project_idx}/status/tasktype/{which}/order/update |  X POST   |    X    |  -   |  -   |
+| 15. [상태 코드 할당 순서 수정]                                   | /api/project/{project_idx}/status/allocation/order/update       |  X POST   |    X    |  -   |  -   |
 
 - 참조<sup>1</sup> - /api/project/{project_idx}/episode/list[/{detail}] (project-shot-overview.md 참조)
 
@@ -26,9 +33,9 @@
 
 ---
 
-## 1. 태스크타입 할당 조회 <a id="project-tasktype-list"></a>
+## 1. 태스크타입 할당 목록 조회 <a id="project-tasktype-list"></a>
 
-### `GET /api/project/{project_idx}/tasktype/{which}/list`
+### `GET /api/project/{project_idx}/tasktype/{which}/allocation/list`
 
 ### permission
 
@@ -36,10 +43,10 @@
 
 ### request
 
-| param       | type |  data   | required | desc          |
-| ----------- | :--: | :-----: | :------: | ------------- |
-| project_idx | path | integer |    O     |               |
-| which       | path | string  |    O     | asset or shot |
+| param       | type |  data   | required | desc                   |
+|-------------|:----:|:-------:|:--------:|------------------------|
+| project_idx | path | integer |    O     |                        |
+| which       | path | string  |    O     | asset or shot or issue |
 
 ### response
 
@@ -52,25 +59,25 @@
 	"data": {
 		"tasktypes": [
 			{
-				"tasktype_idx": "12",
-				"tasktype_name": "render",
-				"color": "#888888",
-				"description": "asset render"
+				"idx": "1",
+				"name": "Animation",
+				"description": "for animation",
+				"pos": "1",
+				"color": "#DE4E4E",
+				"kind": "shot",
+				"next_tasktype_idxes": [1, 2]
 			},
 			{
-				"tasktype_idx": "13",
-				"tasktype_name": "coloring",
-				"color": "#888888",
-				"description": "asset coloring"
-			},
-			{
-				"tasktype_idx": "14",
-				"tasktype_name": "Rigging",
-				"color": "#888888",
-				"description": "리깅"
+				"idx": "3",
+				"name": "Comp",
+				"description": "",
+				"pos": "2",
+				"color": "#FFD906",
+				"kind": "shot",
+				"next_tasktype_idxes": [1, 2]
 			}
 		],
-		"tasktype_idx_with_project": ["12", "13"]
+		"tasktype_idx_with_project": ["1", "3"]
 	}
 }
 ```
@@ -79,7 +86,7 @@
 
 ## 2. 태스크타입 재할당 <a id="project-tasktype-update"></a>
 
-### `POST /api/project/{project_idx}/tasktype/{which}/update`
+### `POST /api/project/{project_idx}/tasktype/{which}/allocation/update`
 
 ### permission
 
@@ -87,11 +94,15 @@
 
 ### request
 
-| param          | type  |  data   | required | desc |
-| -------------- | :---: | :-----: | :------: | ---- |
-| project_idx    | path  | integer |    O     |      |
-| which          | path  | string  |    O     |      |
-| tasktype_idx[] | query | integer |    O     |      |
+| param                 | type  |       data       | required | desc                            |
+|-----------------------|:-----:|:----------------:|:--------:|---------------------------------|
+| project_idx           | path  |     integer      |    O     |                                 |
+| which                 | path  |      string      |    O     |                                 |
+| tasktype_idx[]        | query | array of integer |    O     |                                 |
+| add_tasktype_name[]   | query | array of integer |    X     | 생성되는 아이템 이름            |
+| pos[]                 | query |  array of float  |    O     | 위치값 (0 이상)                 |
+| add_pos[]             | query |  array of float  |    X     | 생성되는 아이템 위치값 (0 이상) |
+| next_tasktype_idxes[] | query | array of integer |    O     | #all[idx=999999999] 모두를 뜻함 |
 
 - 파라미터로 넘어온 tasktype_idx 만 프로젝트에 할당하고, 포함되지 않은 것은 모두 할당에서 제외함.
 
@@ -101,7 +112,7 @@
 {
 	"error": {
 		"code": 200,
-		"message": "태스크 타입을 할당했습니다."
+		"message": "태스크타입을 할당했습니다."
 	},
 	"data": null
 }
@@ -109,9 +120,9 @@
 
 ---
 
-## 3. 프로젝트 내 상태 코드 목록 조회 <a id="project-status-list"></a>
+## 3. 상태 코드 할당 목록 조회 <a id="project-status-list"></a>
 
-### `GET /api/project/{project_idx}/detail/status/list`
+### `GET /api/project/{project_idx}/status/allocation/list`
 
 ### permission
 
@@ -120,48 +131,95 @@
 ### request
 
 | param       | type |  data   | required | desc |
-| ----------- | :--: | :-----: | :------: | ---- |
+|-------------|:----:|:-------:|:--------:|------|
 | project_idx | path | integer |    O     |      |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"statuses": [
-			{
-				"status_idx": 1,
-				"name": "Final",
-				"color": "#DE4E4E",
-				"progress": "100%"
-			},
-			{
-				"status_idx": 2,
-				"name": "Hold",
-				"color": "#F5A623",
-				"progress": "90%"
-			},
-			{
-				"status_idx": 3,
-				"name": "ing",
-				"color": "#FFD906",
-				"progress": "80%"
-			}
-		],
-		"shot_asset_idx_with_project": [1, 2, 3], // status_idx
-		"task_idx_with_project": [1, 2, 3], // status_idx
-		"version_idx_with_project": [1, 2, 3] // status_idx
-	}
+    "error": {
+        "code": 200,
+        "message": "성공"
+    },
+    "data": {
+        "statuses": [
+            {
+                "idx": "1",
+                "name": "wip",
+                "description": null,
+                "is_on": "1",
+                "pos": "1",
+                "color": "#dbd8db",
+                "progress": "5"
+            },
+            {
+                "idx": "14",
+                "name": "A_tests",
+                "description": "1111111111222",
+                "is_on": "1",
+                "pos": "1",
+                "color": "#4caf50",
+                "progress": "50"
+            },
+            {
+                "idx": "2",
+                "name": "confirm",
+                "description": null,
+                "is_on": "1",
+                "pos": "2",
+                "color": "#03a9f4",
+                "progress": "30"
+            },
+            {
+                "idx": "3",
+                "name": "retake",
+                "description": null,
+                "is_on": "1",
+                "pos": "3",
+                "color": "#f44336",
+                "progress": "10"
+            },
+            {
+                "idx": "4",
+                "name": "pub",
+                "description": null,
+                "is_on": "1",
+                "pos": "4",
+                "color": "#ff9800",
+                "progress": "90"
+            },
+            {
+                "idx": "5",
+                "name": "final",
+                "description": null,
+                "is_on": "1",
+                "pos": "5",
+                "color": "#607d8b",
+                "progress": "100"
+            },
+            {
+                "idx": "15",
+                "name": "test1111333",
+                "description": "",
+                "is_on": "1",
+                "pos": 99999,
+                "color": "#f44336",
+                "progress": "50"
+            }
+        ],
+        "shot_idx_with_project": ["1", "14", "2", "3", "4", "5"],
+        "asset_idx_with_project": ["1", "14", "2", "3", "4", "5"],
+        "task_idx_with_project": ["1", "14", "2", "3", "4", "5"],
+        "version_idx_with_project": ["1", "2", "3", "4", "5"],
+        "issue_idx_with_project": ["1", "14", "2", "3", "4", "5"]
+    }
 }
 ```
 
 ---
 
-## 4. 프로젝트 내 상태 코드 재할당 <a id="project-status-update"></a>
+## 4. 상태 코드 재할당 <a id="project-status-update"></a>
 
 ### `POST /api/project/{project_idx}/status/allocation/update`
 
@@ -171,12 +229,17 @@
 
 ### request
 
-| param            | type  |  data   | required | desc                      |
-| ---------------- | :---: | :-----: | :------: | ------------------------- |
-| project_idx      | path  | integer |    O     |                           |
-| shot_asset_idx[] | query | integer |    O     | 실제 값은 모두 status_idx |
-| task_idx[]       | query | integer |    O     | 실제 값은 모두 status_idx |
-| version_idx[]    | query | integer |    O     | 실제 값은 모두 status_idx |
+| param            | type  |       data       | required | desc                               |
+|------------------|:-----:|:----------------:|:--------:|------------------------------------|
+| project_idx      | path  |     integer      |    O     |                                    |
+| shot_asset_idx[] | query | array of integer |    O     | 실제 값은 모두 status_idx          |
+| task_idx[]       | query | array of integer |    O     | 실제 값은 모두 status_idx          |
+| version_idx[]    | query | array of integer |    O     | 실제 값은 모두 status_idx          |
+| issue_idx[]      | query | array of integer |    O     | 실제 값은 모두 status_idx          |
+| status_idx[]     | query | array of integer |    O     | 위치값 수정을 위한 실제 status_idx |
+| pos[]            | query |  array of float  |    O     | 위치값 (0 이상)                    |
+
+- status_idx[] 와 pos[] 는 갯수가 맞아야 함
 
 ### response
 
@@ -203,13 +266,13 @@
 ### request
 
 | param       | type |  data   | required | desc |
-| ----------- | :--: | :-----: | :------: | ---- |
+|-------------|:----:|:-------:|:--------:|------|
 | project_idx | path | integer |    O     |      |
 
 ### response
 
 ```json
-{{
+{
   "error": {
     "code": 200,
     "message": "성공"
@@ -259,7 +322,7 @@
 ### request
 
 | param       | type  |  data   | required | desc |
-| ----------- | :---: | :-----: | :------: | ---- |
+|-------------|:-----:|:-------:|:--------:|------|
 | project_idx | path  | integer |    O     |      |
 | user_idx[]  | query | integer |    O     |      |
 
@@ -277,7 +340,7 @@
 
 ---
 
-## 7. 샷/에셋 커스텀 컬럼 목록 조회 <a id="project-custom-list"></a>
+## 7. 에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 목록 조회 <a id="project-custom-list"></a>
 
 ### `GET /api/project/{project_idx}/{which}/custom/list`
 
@@ -287,10 +350,10 @@
 
 ### request
 
-| param       | type |  data   | required | desc          |
-| ----------- | :--: | :-----: | :------: | ------------- |
-| project_idx | path | integer |    O     |               |
-| which       | path | string  |    O     | shot or asset |
+| param       | type |  data   | required | desc                                           |
+|-------------|:----:|:-------:|:--------:|------------------------------------------------|
+| project_idx | path | integer |    O     |                                                |
+| which       | path | string  |    O     | episode, sequence, shot, asset_category, asset |
 
 ### response
 
@@ -499,7 +562,7 @@
 }
 ```
 
-## 8. 샷/에셋 커스텀 컬럼 정보 수정 <a id="project-custom-update"></a>
+## 8. 에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 정보 수정 <a id="project-custom-update"></a>
 
 ### `POST /api/project/{project_idx}/{which}/custom/update`
 
@@ -509,14 +572,14 @@
 
 ### request
 
-| param         | type  |       data       | required | desc                         |
-| ------------- | :---: | :--------------: | :------: | ---------------------------- |
-| project_idx   | path  |     integer      |    O     |                              |
-| which         | path  |      string      |    O     | shot or asset                |
-| column_name[] | query | array of string  |    O     | c1, c2 ~ c31, c32            |
-| show_name[]   | query | array of string  |    O     |                              |
-| description[] | query | array of string  |    O     |                              |
-| is_on[]       | query | array of integer |    O     | 1 - 이용 / 0 - 이용하지 않음 |
+| param       | type  |       data       | required | desc                                           |
+|-------------|:-----:|:----------------:|:--------:|------------------------------------------------|
+| project_idx | path  |     integer      |    O     |                                                |
+| which       | path  |      string      |    O     | episode, sequence, shot, asset_category, asset |
+| idxes[]     | query | array of integer |    O     |                                                |
+| column[]    | query | array of string  |    O     |                                                |
+| old_val[]   | query | array of string  |    O     |                                                |
+| new_val[]   | query | array of string  |    O     |                                                |
 
 ### response (작성 중)
 
@@ -526,9 +589,162 @@
 		"code": 200,
 		"message": "성공"
 	},
-	"data": {
-		"column_names": ["c1", "c2"]
-	}
+	"data": null
+}
+```
+
+---
+
+## 9. 에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 생성 <a id="project-custom-create"></a>
+
+### `POST /api/project/{project_idx}/{which}/custom/create`
+
+### permission
+
+- `permission.update_project`
+
+### request
+
+| param       | type  |  data   | required | desc                                           |
+|-------------|:-----:|:-------:|:--------:|------------------------------------------------|
+| project_idx | path  | integer |    O     |                                                |
+| which       | path  | string  |    O     | episode, sequence, shot, asset_category, asset |
+| show_name   | query | string  |    O     |                                                |
+| description | query | string  |    O     |                                                |
+
+### response (작성 중)
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": null
+}
+```
+
+---
+
+## 10. 에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 삭제 <a id="project-custom-delete"></a>
+
+### `POST /api/project/{project_idx}/{which}/custom/delete`
+
+### permission
+
+- `permission.update_project`
+
+### request
+
+| param       | type  |   data   | required | desc                                           |
+|-------------|:-----:|:--------:|:--------:|------------------------------------------------|
+| project_idx | path  | integer  |    O     |                                                |
+| which       | path  |  string  |    O     | episode, sequence, shot, asset_category, asset |
+| custom_idx  | query | interger |    O     |                                                |
+
+### response (작성 중)
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": null
+}
+```
+
+---
+
+---
+
+## 11. 에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 활성화 <a id="project-custom-activate"></a>
+
+### `POST /api/project/{project_idx}/{which}/custom/activate`
+
+### permission
+
+- `permission.update_project`
+
+### request
+
+| param       | type  |   data   | required | desc                                           |
+|-------------|:-----:|:--------:|:--------:|------------------------------------------------|
+| project_idx | path  | integer  |    O     |                                                |
+| which       | path  |  string  |    O     | episode, sequence, shot, asset_category, asset |
+| custom_idx  | query | interger |    O     |                                                |
+
+### response (작성 중)
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": null
+}
+```
+
+---
+
+## 12. 에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 비활성화 <a id="project-custom-deactivate"></a>
+
+### `POST /api/project/{project_idx}/{which}/custom/deactivate`
+
+### permission
+
+- `permission.update_project`
+
+### request
+
+| param       | type  |   data   | required | desc                                           |
+|-------------|:-----:|:--------:|:--------:|------------------------------------------------|
+| project_idx | path  | integer  |    O     |                                                |
+| which       | path  |  string  |    O     | episode, sequence, shot, asset_category, asset |
+| custom_idx  | query | interger |    O     |                                                |
+
+### response (작성 중)
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": null
+}
+```
+
+---
+
+## 13. 에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 순서 변경 <a id="project-custom-order"></a>
+
+### `POST /api/project/{project_idx}/{which}/custom/order`
+
+### permission
+
+- `permission.update_project`
+
+### request
+
+| param       | type  |   data   | required | desc                                                               |
+|-------------|:-----:|:--------:|:--------:|--------------------------------------------------------------------|
+| project_idx | path  | integer  |    O     |                                                                    |
+| which       | path  |  string  |    O     | episode, sequence, shot, asset_category, asset                     |
+| start       | query | interger |    O     | 이동할 행들의 첫번째 행의 위치 값 ex: 5번,6번 -> 2번으로 이동 시 5 |
+| end         | query | interger |    O     | 행들이 이동 한 위치의 값 ex: 5번,6번 -> 2번으로 이동 시 2          |
+| row_count   | query | interger |    O     | 이동하는 행들의 개수 ex: 5번,6번 행이 이동 시 2                    |
+
+### response (작성 중)
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": null
 }
 ```
 
@@ -536,11 +752,16 @@
 
 ## 끝
 
-[태스크타입 할당 조회]: #project-tasktype-list
+[태스크타입 할당 목록 조회]: #project-tasktype-list
 [태스크타입 재할당]: #project-tasktype-update
-[프로젝트 내 상태 코드 할당 조회]: #project-status-list
-[프로젝트 내 상태 코드 재할당]: #project-status-update
+[상태 코드 할당 목록 조회]: #project-status-list
+[상태 코드 재할당]: #project-status-update
 [이용자 할당 조회]: #project-user-list
 [이용자 재할당]: #project-user-update
-[샷/에셋 커스텀 컬럼 목록 조회]: #project-custom-list
-[샷/에셋 커스텀 컬럼 정보 수정]: #project-custom-update
+[에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 목록 조회]: #project-custom-list
+[에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 정보 수정]: #project-custom-update
+[에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 생성]: #project-custom-create
+[에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 삭제]: #project-custom-delete
+[에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 활성화]: #project-custom-activate
+[에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 비활성화]: #project-custom-deactivate
+[에피소드/시퀀스/샷/에셋 카테고리/에셋 커스텀 컬럼 순서 변경]: #project-custom-order

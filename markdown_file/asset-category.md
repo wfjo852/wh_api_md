@@ -1,17 +1,17 @@
-# WH2API::AssetCategory
+# WH2API:: AssetCategory
 
 - `project.md` 와 일부 합칠 예정
 
 ## 목차
 
-| 내용                         | slug                                                                | 서버 구현 | 웹 적용 |
-| :--------------------------- | :------------------------------------------------------------------ | :-------: | :-----: |
-| 1. [에셋 카테고리 목록 조회] | /api/project/{project_idx}/asset/category/list[/{detail}]           |    GET    |    O    |
-| 2. [에셋 카테고리 생성]      | /api/project/{project_idx}/asset/category/create                    |   POST    |    O    |
-| 3. [에셋 카테고리 수정]      | /api/project/{project_idx}/asset/category/{category_idx}/update     |   POST    |    O    |
-| 4. [에셋 카테고리 삭제]      | /api/project/{project_idx}/asset/category/{category_idx}/delete     |   POST    |    O    |
-| 5. [에셋 카테고리 활성화]    | /api/project/{project_idx}/asset/category/{category_idx}/activate   |   POST    |    O    |
-| 6. [에셋 카테고리 비활성화]  | /api/project/{project_idx}/asset/category/{category_idx}/deactivate |   POST    |    O    |
+| 내용                         | slug                                                                      | 서버 구현 | 웹 적용 |  웹훅  | 로그 |
+| :--------------------------- | :------------------------------------------------------------------------ | :-------: | :-----: | :----: | :--: |
+| 1. [에셋 카테고리 목록 조회] | /api/project/{project_idx}/asset/asset_category/list[/{detail}]           |    GET    |    O    |   -    |  -   |
+| 2. [에셋 카테고리 생성]      | /api/project/{project_idx}/asset/asset_category/create                    |   POST    |    O    | hooked |  O   |
+| 3. [에셋 카테고리 수정]      | /api/project/{project_idx}/asset/category/{category_idx}/update           |   POST    |    O    |   -    |  O   |
+| 4. [에셋 카테고리 삭제]      | /api/project/{project_idx}/asset/asset_category/{category_idx}/delete     |   POST    |    O    |   -    |  O   |
+| 5. [에셋 카테고리 활성화]    | /api/project/{project_idx}/asset/asset_category/{category_idx}/activate   |   POST    |    O    |   -    |  -   |
+| 6. [에셋 카테고리 비활성화]  | /api/project/{project_idx}/asset/asset_category/{category_idx}/deactivate |   POST    |    O    |   -    |  -   |
 
 ---
 
@@ -24,7 +24,7 @@
 
 ## 1. 에셋 카테고리 목록 조회 <a id="project-asset-category-list"></a>
 
-### `GET /api/project/{project_idx}/asset/category/list[/{detail}]`
+### `GET /api/project/{project_idx}/asset/asset_category/list[/{detail}]`
 
 ### permission
 
@@ -44,24 +44,24 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"asset_category": [
-			{
-				"category_idx": "1",
-				"name": "animalsm",
-				"description": "desc"
-			},
-			{
-				"category_idx": "2",
-				"name": "building",
-				"description": "desc"
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "asset_categories": [
+      {
+        "idx": "1",
+        "name": "animalsm",
+        "description": "desc"
+      },
+      {
+        "idx": "2",
+        "name": "building",
+        "description": "desc"
+      }
+    ]
+  }
 }
 ```
 
@@ -69,40 +69,40 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"asset_category": [
-			{
-				"category_idx": "1",
-				"name": "animal",
-				"description": "this is animal.",
-				"is_on": "1",
-				"asset_count": "1",
-				"duration_count": "0 Days",
-				"progress": "100.00%",
-				"task": {
-					"total": "1",
-					"assigned_users": "1"
-				}
-			},
-			{
-				"category_idx": "2",
-				"name": "building",
-				"description": "building is tall.",
-				"is_on": "1",
-				"asset_count": "0",
-				"duration_count": "0 Days",
-				"progress": "0%",
-				"task": {
-					"total": "0",
-					"assigned_users": "0"
-				}
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "asset_categories": [
+      {
+        "idx": "1",
+        "name": "animal",
+        "description": "this is animal.",
+        "is_on": "1",
+        "asset_count": "1",
+        "duration_count": "0 Days",
+        "progress": "100.00%",
+        "task": {
+          "total": "1",
+          "assigned_users": "1"
+        }
+      },
+      {
+        "idx": "2",
+        "name": "building",
+        "description": "building is tall.",
+        "is_on": "1",
+        "asset_count": "0",
+        "duration_count": "0 Days",
+        "progress": "0%",
+        "task": {
+          "total": "0",
+          "assigned_users": "0"
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -110,7 +110,12 @@
 
 ## 2. 에셋 카테고리 생성 <a id="project-asset-category-create"></a>
 
-### `POST /api/project/{project_idx}/asset/category/create`
+### `POST /api/project/{project_idx}/asset/asset_category/create`
+
+### Webhook
+
+- event: asset category
+- action: create
 
 ### permission
 
@@ -118,23 +123,25 @@
 
 ### request
 
-| param         | type  |  data   | required | desc |
-| ------------- | :---: | :-----: | :------: | ---- |
-| project_idx   | path  | integer |    O     |      |
-| category_name | query | string  |    O     |      |
-| description   | query | string  |    X     |      |
+| param               | type  |  data   | required | desc |
+| ------------------- | :---: | :-----: | :------: | ---- |
+| project_idx         | path  | integer |    O     |      |
+| asset_category_name | query | string  |    O     |      |
+| description         | query | string  |    X     |      |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "에셋 카테고리가 등록됐습니다."
-	},
-	"data": {
-		"category_idx": 1
-	}
+  "error": {
+    "code": 200,
+    "message": "에셋 카테고리가 등록됐습니다."
+  },
+  "data": {
+    "asset_category": {
+      "idx": 1
+    }
+  }
 }
 ```
 
@@ -150,24 +157,29 @@
 
 ### request
 
-| param         | type  |  data   | required | desc |
-| ------------- | :---: | :-----: | :------: | ---- |
-| project_idx   | path  | integer |    O     |      |
-| category_idx  | path  | integer |    O     |      |
-| category_name | query | string  |    O     |      |
-| description   | query | string  |    X     |      |
+| param        | type  |  data   | required | desc             |
+| ------------ | :---: | :-----: | :------: | ---------------- |
+| project_idx  | path  | integer |    O     |                  |
+| category_idx | path  | integer |    O     |                  |
+| column       | query | string  |    O     |                  |
+| old_val      | query | string  |    O     | 공백일 수는 있음 |
+| new_val      | query | string  |    O     | 공백일 수는 있음 |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "에셋 카테고리 정보가 수정됐습니다."
-	},
-	"data": {
-		"category_idx": 1
-	}
+  "error": {
+    "code": 200,
+    "message": "에셋 카테고리 정보가 수정됐습니다."
+  },
+  "data": {
+    "category": {
+      "idx": "4",
+      "column": "description",
+      "value": "until 4"
+    }
+  }
 }
 ```
 
@@ -191,11 +203,11 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "카테고리가 삭제됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "카테고리가 삭제됐습니다."
+  },
+  "data": null
 }
 ```
 
@@ -220,11 +232,11 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "에셋 카테고리가 활성화 되었습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "에셋 카테고리가 활성화 되었습니다."
+  },
+  "data": null
 }
 ```
 
@@ -249,11 +261,11 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "에셋 카테고리가 비활성화 되었습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "에셋 카테고리가 비활성화 되었습니다."
+  },
+  "data": null
 }
 ```
 

@@ -2,33 +2,36 @@
 
 ## 목차
 
-| 내용                           | slug                                     | 서버 구현 | 웹 적용 |
-| :----------------------------- | :--------------------------------------- | :-------: | :-----: |
-| 1. [이용자 목록 조회]          | /api/user/list                           |    GET    |    O    |
-| 2. [이용자 정보 수정]          | /api/user/{user_idx}/update              |   POST    |    O    |
-| 3. [이용자 계정 등록]          | /api/user/create                         |   POST    |    O    |
-| 4. [이용자 정보 엑셀 내보내기] | /api/user/export-xls                     |     X     |    X    |
-| 5. [이용자 계정 삭제]          | /api/user/{user_idx}/delete              |   POST    |    O    |
-| 6. [이용자 계정 활성화]        | /api/user/{user_idx}/activate            |   POST    |    O    |
-| 7. [이용자 계정 비활성화]      | /api/user/{user_idx}/deactivate          |   POST    |    O    |
-| 8. [이용자 비밀번호 초기화]    | /api/user/{user_idx}/password/initialize |   POST    |    O    |
-| 9. [참여 팀 목록]              | /api/user/{user_idx}/team/list           |    GET    |    O    |
-| 10. [참여 프로젝트 목록 조회]  | /api/user/{user_idx}/project/list        |    GET    |    O    |
-| 11. [이용자 팀 참여하기]       | /api/user/{user_idx}/team/add            |   POST    |    O    |
-| 12. [이용자 프로젝트 참여하기] | /api/user/{user_idx}/project/add         |   POST    |    O    |
-| 13. [이용자 역할 목록 조회]    | /api/user/role/list                      |    GET    |    O    |
-| 14. [이용자 썸네일 업데이트]   | /api/user/{user_idx}/thumbnail/update    |   POST    |    O    |
-| 15. [본인 프로필 조회]         | /api/user/profile/read                   |    GET    |    O    |
-| 16. [본인 프로필 내용 수정]    | /api/user/profile/update                 |   POST    |    O    |
-| 17. [퍼미션 목록 조회]         | /api/user/permission/list                |    O\*    |    O    |
-| 18. [퍼미션 설정 저장]         | /api/user/permission/update              |   POST    |    O    |
-| 19. [퍼미션 초기화]            | /api/user/permission/reset               |  X POST   |    X    |
-| 20. [이용자 로그인]            | /api/user/auth                           |   POST    |    X    |
-| 21. [이용자 급여 수정]         | /api/user/{user_idx}/salary/update       |   POST    |    O    |
-| 22. [이용자 업무일 수정]       | /api/user/{user_idx}/working_day/update  |   POST    |    O    |
-| 23. [비이용자 역할 목록 조회]  | /api/guest/role/list                     |    GET    |    O    |
-| 24. [이용자 가입]              | /api/user/join                           |   POST    |    O    |
-| 25. [마이태스크타입 수정]      | /api/user/mytasktype/update              |   POST    |    O    |
+| 내용                            | slug                                     | 서버 구현 | 웹 적용 |  웹훅  | 로그 |
+| :------------------------------ | :--------------------------------------- | :-------: | :-----: | :----: | :--: |
+| 1. [이용자 목록 조회]           | /api/user/list                           |    GET    |    O    |   -    |  -   |
+| 2. [이용자 정보 수정]           | /api/user/{user_idx}/update              |   POST    |    O    |   -    |  -   |
+| 3. [이용자 계정 등록]           | /api/user/create                         |   POST    |    O    |   -    |  -   |
+| 4. [이용자 정보 엑셀 내보내기]  | /api/user/export-xls                     |     X     |    X    |   -    |  -   |
+| 5. [이용자 계정 삭제]           | /api/user/{user_idx}/delete              |   POST    |    O    |   -    |  -   |
+| 6. [이용자 계정 활성화]         | /api/user/{user_idx}/activate            |   POST    |    O    |   -    |  -   |
+| 7. [이용자 계정 비활성화]       | /api/user/{user_idx}/deactivate          |   POST    |    O    |   -    |  -   |
+| 8. [이용자 비밀번호 초기화]     | /api/user/{user_idx}/password/initialize |   POST    |    O    |   -    |  -   |
+| 9. [참여 팀 목록]               | /api/user/{user_idx}/team/list           |    GET    |    O    |   -    |  -   |
+| 10. [참여 프로젝트 목록 조회]   | /api/user/{user_idx}/project/list        |    GET    |    O    |   -    |  -   |
+| 11. [이용자 팀 참여하기]        | /api/user/{user_idx}/team/add            |   POST    |    O    |   -    |  -   |
+| 12. [이용자 프로젝트 참여하기]  | /api/user/{user_idx}/project/add         |   POST    |    O    |   -    |  -   |
+| 13. [이용자 역할 목록 조회]     | /api/user/role/list                      |    GET    |    O    |   -    |  -   |
+| 14. [이용자 썸네일 업데이트]    | /api/user/{user_idx}/thumbnail/update    |   POST    |    O    |   -    |  -   |
+| 15. [본인 프로필 조회]          | /api/user/profile/read                   |    GET    |    O    |   -    |  -   |
+| 16. [본인 프로필 내용 수정]     | /api/user/profile/update                 |   POST    |    O    |   -    |  -   |
+| 17. [퍼미션 목록 조회]          | /api/user/permission/list                |    O\*    |    O    |   -    |  -   |
+| 18. [퍼미션 설정 저장]          | /api/user/permission/update              |   POST    |    O    |   -    |  -   |
+| 19. [퍼미션 초기화]             | /api/user/permission/reset               |  X POST   |    X    |   -    |  -   |
+| 20. [이용자 로그인]             | /api/user/auth                           |   POST    |    O    | hooked |  -   |
+| 21. [이용자 급여 수정]          | /api/user/{user_idx}/salary/update       |   POST    |    O    |   -    |  -   |
+| 22. [이용자 업무일 수정]        | /api/user/{user_idx}/working_day/update  |   POST    |    O    |   -    |  -   |
+| 23. [비이용자 역할 목록 조회]   | /api/guest/role/list                     |    GET    |    O    |   -    |  -   |
+| 24. [이용자 가입]               | /api/user/join                           |   POST    |    O    | hooked |  -   |
+| 25. [마이태스크타입 수정]       | /api/user/mytasktype/update              |   POST    |    X    |   -    |  -   |
+| 26. [이용자 정보 조회]          | /api/user/{user_idx}/read                |    GET    |    X    |   -    |  -   |
+| 27. [이용자 부가정보 업데이트]  | /api/user/meta/update                    |   POST    |    O    |   -    |  -   |
+| 28. [이용자 급여 벌크 업데이트] | /api/user/salary/bulk/update             |   POST    |    O    |   -    |  -   |
 
 - O\* - api 없이 콘트롤러에 직접 구현
 
@@ -87,41 +90,41 @@
   "data": {
     "users": [
       {
-        "user_idx": "1",
-        "user_id": "c2m",
-        "user_name": "c2monster",
-        "user_thumbnail": "",
+        "idx": "1",
+        "id": "c2m",
+        "name": "c2monster",
+        "thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png",
         "user_role": "artist",
         "email": "c2m@c2m.com",
-        "phone": "02-345-6789",
+        "phone": "82 2-561-5335",
         "mobile": "010-1234-5678",
         "is_on": "1",
-        "team_list": [
-          {"team_idx": 1, "name": "team #2"},
-          {"team_idx": 2, "name": "team #2"},
+        "teams": [
+          {"idx": 1, "name": "team #2"},
+          {"idx": 2, "name": "team #2"},
         ],
-        "project_list": [
-          {"project_idx": 1, "name": "Popo Cuca"},
-          {"project_idx": 2, "name": "Popo Cuca3"},
+        "projects": [
+          {"idx": 1, "name": "Popo Cuca"},
+          {"idx": 2, "name": "Popo Cuca3"},
         ]
       },
       {
-        "user_idx": "2",
-        "user_id": "c3m",
-        "user_name": "Mio Ito",
-        "user_thumbnail": "",
+        "idx": "2",
+        "id": "c3m",
+        "name": "Mio Ito",
+        "thumbnail": "http://127.0.0.1:81/2019/04/08/dc3295a0a38e89e9.png",
         "user_role": "artist",
         "email": "c3m@c2.com",
-        "phone": "",
+        "phone": "+82 2-561-5335",
         "mobile": "111-222-3333",
         "is_on": "1",
-        "team_list": [
-          {"team_idx": 1, "name": "team #2"},
-          {"team_idx": 2, "name": "team #2"},
+        "teams": [
+          {"idx": 1, "name": "team #2"},
+          {"idx": 2, "name": "team #2"},
         ],
-        "project_list": [
-          {"project_idx": 1, "name": "Popo Cuca"},
-          {"project_idx": 2, "name": "Popo Cuca3"},
+        "projects": [
+          {"idx": 1, "name": "Popo Cuca"},
+          {"idx": 2, "name": "Popo Cuca3"},
         ]
       }
     ]
@@ -154,11 +157,11 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 정보가 수정됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "User account information is edited."
+  },
+  "data": null
 }
 ```
 
@@ -187,15 +190,20 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 계정이 추가됐습니다."
-	},
-	"data": {
-		"user_idx": "8",
-		"user_thumbnail": "2019/05/07/abc.jpg",
-		"user_role_name": "Artist"
-	}
+  "error": {
+    "code": 200,
+    "message": "User account is added."
+  },
+  "data": {
+    "user": {
+      "idx": "10",
+      "name": "Director",
+      "id": "c5m",
+      "email": "director@c2monster.com",
+      "thumbnail": "http://localhost:81/2020/08/12/6271d217cdbbc2da.png",
+      "user_role_name": "Director"
+    }
+  }
 }
 ```
 
@@ -213,56 +221,56 @@
 
 ```json
 {
-	"columns": [
-		"thumbnail",
-		"user_id",
-		"user_name",
-		"team",
-		"type",
-		"email",
-		"office_tel",
-		"mobile",
-		"password",
-		"skills"
-	],
-	"users": [
-		{
-			"idx": "23",
-			"thumbnail": "sample.jpg",
-			"user_id": "id0001",
-			"user_name": "UserName 001",
-			"team": "Team001",
-			"type": "Coordinator",
-			"email": "id001@gmail.com",
-			"office_tel": "000-0000-0000",
-			"mobile": "010-1111-1111",
-			"skills": ["Production", "Art", "Layout", "Manage"]
-		},
-		{
-			"idx": "23",
-			"thumbnail": "sample.jpg",
-			"user_id": "id0001",
-			"user_name": "UserName 001",
-			"team": "Team001",
-			"type": "Coordinator",
-			"email": "id001@gmail.com",
-			"office_tel": "000-0000-0000",
-			"mobile": "010-1111-1111",
-			"skills": ["Production", "Art", "Layout", "Manage"]
-		},
-		{
-			"idx": "23",
-			"thumbnail": "sample.jpg",
-			"user_id": "id0001",
-			"user_name": "UserName 001",
-			"team": "Team001",
-			"type": "Coordinator",
-			"email": "id001@gmail.com",
-			"office_tel": "000-0000-0000",
-			"mobile": "010-1111-1111",
-			"skills": ["Production", "Art", "Layout", "Manage"]
-		}
-	]
+  "columns": [
+    "thumbnail",
+    "user_id",
+    "user_name",
+    "team",
+    "type",
+    "email",
+    "office_tel",
+    "mobile",
+    "password",
+    "skills"
+  ],
+  "users": [
+    {
+      "idx": "23",
+      "thumbnail": "sample.jpg",
+      "user_id": "id0001",
+      "user_name": "UserName 001",
+      "team": "Team001",
+      "type": "Coordinator",
+      "email": "id001@gmail.com",
+      "office_tel": "000-0000-0000",
+      "mobile": "010-1111-1111",
+      "skills": ["Production", "Art", "Layout", "Manage"]
+    },
+    {
+      "idx": "23",
+      "thumbnail": "sample.jpg",
+      "user_id": "id0001",
+      "user_name": "UserName 001",
+      "team": "Team001",
+      "type": "Coordinator",
+      "email": "id001@gmail.com",
+      "office_tel": "000-0000-0000",
+      "mobile": "010-1111-1111",
+      "skills": ["Production", "Art", "Layout", "Manage"]
+    },
+    {
+      "idx": "23",
+      "thumbnail": "sample.jpg",
+      "user_id": "id0001",
+      "user_name": "UserName 001",
+      "team": "Team001",
+      "type": "Coordinator",
+      "email": "id001@gmail.com",
+      "office_tel": "000-0000-0000",
+      "mobile": "010-1111-1111",
+      "skills": ["Production", "Art", "Layout", "Manage"]
+    }
+  ]
 }
 ```
 
@@ -270,10 +278,10 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "엑셀 다운로드가 되었습니다."
-	}
+  "error": {
+    "code": 200,
+    "message": "엑셀 다운로드가 되었습니다."
+  }
 }
 ```
 
@@ -297,11 +305,19 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 계정이 삭제됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "User account is removed."
+  },
+  "data": {
+    "user": {
+      "idx": "21",
+      "name": "c6m",
+      "id": "c6m",
+      "email": "c6m@c2monster.com",
+      "thumbnail": "/assets/images/thumbnail/user/small/default.png"
+    }
+  }
 }
 ```
 
@@ -325,11 +341,19 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 계정이 활성화됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "User account has been activated."
+  },
+  "data": {
+    "user": {
+      "idx": "20",
+      "name": "c6m",
+      "id": "c6m",
+      "email": "c6m@c2monster.com",
+      "thumbnail": "/assets/images/thumbnail/user/small/default.png"
+    }
+  }
 }
 ```
 
@@ -353,11 +377,11 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 계정이 비활성화됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "User account is being deactivated."
+  },
+  "data": null
 }
 ```
 
@@ -383,11 +407,19 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 비밀번호가 초기화됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "User's account password is initialized."
+  },
+  "data": {
+    "user": {
+      "idx": "20",
+      "name": "c6m",
+      "id": "c6m",
+      "email": "c6m@c2monster.com",
+      "thumbnail": "/assets/images/thumbnail/user/small/default.png"
+    }
+  }
 }
 ```
 
@@ -413,28 +445,28 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"teams": [
-			{
-				"team_idx": "1",
-				"name": "team #1"
-			},
-			{
-				"team_idx": "2",
-				"name": "team #2"
-			},
-			{
-				"team_idx": "3",
-				"name": "team #3"
-			}
-		],
-		"team_idx_with_user": ["1", "2"],
-		"team_idx_without_user": ["3"]
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "teams": [
+      {
+        "idx": "1",
+        "name": "team #1"
+      },
+      {
+        "idx": "2",
+        "name": "team #2"
+      },
+      {
+        "idx": "3",
+        "name": "team #3"
+      }
+    ],
+    "team_idx_with_user": ["1", "2"],
+    "team_idx_without_user": ["3"]
+  }
 }
 ```
 
@@ -460,28 +492,28 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"projects": [
-			{
-				"name": "project #1",
-				"project_idx": "1"
-			},
-			{
-				"name": "project #2",
-				"project_idx": "2"
-			},
-			{
-				"name": "project #3",
-				"project_idx": "3"
-			}
-		],
-		"project_idx_with_user": ["1", "2"],
-		"project_idx_without_user": ["3"]
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "projects": [
+      {
+        "idx": "1",
+        "name": "project #1"
+      },
+      {
+        "idx": "2",
+        "name": "project #2"
+      },
+      {
+        "idx": "3",
+        "name": "project #3"
+      }
+    ],
+    "project_idx_with_user": ["1", "2"],
+    "project_idx_without_user": ["3"]
+  }
 }
 ```
 
@@ -503,8 +535,9 @@ TODO: 제외된 이용자 삭제 서버에서 미구현
 | param                   | type  |  data   | required | desc          |
 | ----------------------- | :---: | :-----: | :------: | ------------- |
 | user_idx                | path  | integer |    O     | **본인 아님** |
-| team_idx_with_user[]    | query | integer |    O     |               |
-| team_idx_without_user[] | query | integer |    O     |               |
+| team_idx_with_user[]    | query | integer |    X     |               |
+| team_idx_without_user[] | query | integer |    X     |               |
+| add_team_name[]         | query | string  |    X     |               |
 
 - 파라미터를 `team_idx[]` 로 정하고, 이를 반복해서 설정함
 - 아래는 `$.ajax`로 보내기 위한 파라미터를 생성하는 방법 예제
@@ -515,10 +548,10 @@ var team_idxs = ["2", "3"];
 var data_to_send = [];
 
 for (i = 0; i < team_idxs.length; i++) {
-	data_to_send.push({
-		name: "team_idx[]",
-		value: team_idxs[i]
-	});
+  data_to_send.push({
+    name: "team_idx[]",
+    value: team_idxs[i],
+  });
 }
 console.log(data_to_send);
 // data_to_send 값을 $.ajax()의 data에 넣어서 보내면 됨.
@@ -528,22 +561,22 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자가 팀에 추가됐습니다."
-	},
-	"data": {
-		"team_idx_with_user": [
-			{
-				"team_idx": 1,
-				"name": "team1"
-			},
-			{
-				"team_idx": 2,
-				"name": "team2"
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "이용자가 팀에 추가됐습니다."
+  },
+  "data": {
+    "team_idx_with_user": [
+      {
+        "idx": 1,
+        "name": "team1"
+      },
+      {
+        "idx": 2,
+        "name": "team2"
+      }
+    ]
+  }
 }
 ```
 
@@ -562,11 +595,11 @@ TODO: 제외된 프로젝트 삭제 서버에서 미구현
 
 ### request
 
-| param                      | type  |  data   | required | desc          |
-| -------------------------- | :---: | :-----: | :------: | ------------- |
-| user_idx                   | path  | integer |    O     | **본인 아님** |
-| project_idx_with_user[]    | query | integer |    O     |               |
-| project_idx_without_user[] | query | integer |    O     |               |
+| param                   | type  |  data   | required | desc          |
+| ----------------------- | :---: | :-----: | :------: | ------------- |
+| user_idx                | path  | integer |    O     | **본인 아님** |
+| project_idx_with_user[] | query | integer |    O     |               |
+| add_project_name[]      | query | string  |    X     |               |
 
 - 파라미터를 `team_idx[]` 로 정하고, 이를 반복해서 설정함
 - 아래는 `$.ajax`로 보내기 위한 파라미터를 생성하는 방법 예제
@@ -577,10 +610,10 @@ var team_idxs = ["2", "3"];
 var data_to_send = [];
 
 for (i = 0; i < team_idxs.length; i++) {
-	data_to_send.push({
-		name: "team_idx[]",
-		value: team_idxs[i]
-	});
+  data_to_send.push({
+    name: "team_idx[]",
+    value: team_idxs[i],
+  });
 }
 console.log(data_to_send);
 // data_to_send 값을 $.ajax()의 data에 넣어서 보내면 됨.
@@ -590,22 +623,22 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자가 프로젝트에 참여하게 되었습니다."
-	},
-	"data": {
-		"project_idx_with_user": [
-			{
-				"project_idx": 1,
-				"name": "project01"
-			},
-			{
-				"project_idx": 2,
-				"name": "project02"
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "이용자가 프로젝트에 참여하게 되었습니다."
+  },
+  "data": {
+    "project_idx_with_user": [
+      {
+        "idx": 1,
+        "name": "project01"
+      },
+      {
+        "idx": 2,
+        "name": "project02"
+      }
+    ]
+  }
 }
 ```
 
@@ -629,54 +662,100 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"mytask_seeting_list": [
-			{
-				"mytasktype_idx": 1,
-				"mytasktype_name": "None"
-			},
-			{
-				"mytasktype_idx": 2,
-				"mytasktype_name": "Artist"
-			},
-			{
-				"mytasktype_idx": 3,
-				"mytasktype_name": "Artist + Supervisor"
-			}
-		],
-		"user_roles": [
-			{
-				"role_idx": "1",
-        "name": "artist",
-        "description": "아티스트",
-				"mytasktype_idx": 1
-			},
-			{
-				"role_idx": "2",
-        "name": "admin",
-        "description": "관리자",
-				"mytasktype_idx": 2
-			}
-		],
-		"mytasktypes": [
-			{
-				"mytasktype_idx": 1,
-				"name": "None"
-			},
-			{
-				"mytasktype_idx": 2,
-				"name": "Artist"
-			},
-			{
-				"mytasktype_idx": 3,
-				"name": "Artist + Supervisor"
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "Success"
+  },
+  "data": {
+    "user_roles": [
+      {
+        "idx": "1",
+        "name": "Administrator",
+        "mytasktype": {
+          "idx": "3"
+        },
+        "description": "\uad00\ub9ac\uc790"
+      },
+      {
+        "idx": "2",
+        "name": "Artist",
+        "mytasktype": {
+          "idx": "1"
+        },
+        "description": "\uc791\uc5c5\uc790"
+      },
+      {
+        "idx": "3",
+        "name": "Producer",
+        "mytasktype": {
+          "idx": "0"
+        },
+        "description": "\uc81c\uc791 PD"
+      },
+      {
+        "idx": "4",
+        "name": "Coordinator",
+        "mytasktype": {
+          "idx": "0"
+        },
+        "description": "\uc2a4\ucf00\uc904 \uad00\ub9ac"
+      },
+      {
+        "idx": "5",
+        "name": "Main Supervisor",
+        "mytasktype": {
+          "idx": "2"
+        },
+        "description": "\ucd5c\uc885 \uacb0\uc815\uad8c\uc790"
+      },
+      {
+        "idx": "6",
+        "name": "Sub Supervisor",
+        "mytasktype": {
+          "idx": "3"
+        },
+        "description": "\uc911\uac04 \uacb0\uc815\uad8c\uc790"
+      },
+      {
+        "idx": "7",
+        "name": "Leader",
+        "mytasktype": {
+          "idx": "3"
+        },
+        "description": "\ud300\uc7a5"
+      },
+      {
+        "idx": "8",
+        "name": "Director",
+        "mytasktype": {
+          "idx": "2"
+        },
+        "description": "\ud504\ub85c\uc81d\ud2b8 \ub2f4\ub2f9 \uac10\ub3c5"
+      },
+      {
+        "idx": "9",
+        "name": "outsourcing",
+        "mytasktype": {
+          "idx": "1"
+        },
+        "description": "\uc678\uc8fc \uc5c5\uccb4"
+      }
+    ],
+    "mytasktypes": [
+      {
+        "idx": "1",
+        "name": "artist"
+      },
+      {
+        "idx": "2",
+        "name": "supervisor"
+      },
+      {
+        "idx": "3",
+        "name": "artist + supervisor"
+      }
+    ]
+  }
 }
 ```
 
@@ -701,13 +780,17 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 사진이 등록됐습니다."
-	},
-	"data": {
-		"user_thumbnail": "dd.jpg"
-	}
+  "error": {
+    "code": 200,
+    "message": "User's thumbnail is being uploaded."
+  },
+  "data": {
+    "idx": "4",
+    "name": "Supervisor",
+    "id": "c4m",
+    "email": "",
+    "thumbnail": "http://localhost:81/2020/08/13/ab4b6b30937a805a.png"
+  }
 }
 ```
 
@@ -733,21 +816,21 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"profile": {
-			"user_id": "User id 1234",
-			"user_name": "이름",
-			"user_thumbnail": "dd.jpg",
-			"email": "Ddd@daum.net",
-			"phone": "000-20020-",
-			"mobile": "000-0000-0000",
-			"lang": "EN"
-		}
-	}
+  "error": {
+    "code": 200,
+    "message": "Success"
+  },
+  "data": {
+    "user": {
+      "id": "c2m",
+      "name": "C2Monster",
+      "thumbnail": "http://localhost:81/2019/04/08/c1f855a779d0543e.png",
+      "email": "contact@c2monster.com",
+      "phone": "+82 2-561-5335",
+      "mobile": "010-1234-5678",
+      "lang": "EN"
+    }
+  }
 }
 ```
 
@@ -777,23 +860,29 @@ console.log(data_to_send);
 - 이용자 아이디 user_id 는 수정하지 못하기 때문에 보낼 필요가 없음
 - 서버에 전송하기 전 패스워드 체크 필요.
   _ `old_password`를 입력하지 않으면 클라이언트에서 에러 처리
-  _ `new_password` 와 `confirm_password`를 비교해서 다르면 클라이언트에서 에러 처리
+  _ `new_password` 와 `old_password`를 비교해서 다르면 클라이언트에서 에러 처리
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "프로필 정보가 수정 되었습니다."
-	},
-	"data": {
-		"user_thumbnail": null
-	}
+  "error": {
+    "code": 200,
+    "message": "Profile information is benig edited."
+  },
+  "data": {
+    "user": {
+      "idx": "1",
+      "name": "C2Monster",
+      "id": "c2m",
+      "email": "contact@c2monster.com",
+      "thumbnail": "http://localhost:81/2019/04/08/c1f855a779d0543e.png"
+    }
+  }
 }
 ```
 
-- 이용자 썸네일을 업데이트하면 data.user_thumbnail 에 바뀐 이용자 썸네일의 주소가 표시된다.
+- 이용자 썸네일을 업데이트하면 data.user.thumbnail 에 바뀐 이용자 썸네일의 주소가 표시된다.
 
 ---
 
@@ -817,7 +906,7 @@ console.log(data_to_send);
 
 ---
 
-## 18. 퍼미션 설정 저장 <a id="user-permission-update></a>
+## 18. 퍼미션 설정 저장 <a id="user-permission-update"></a>
 
 ### `POST /api/user/permission/update`
 
@@ -876,13 +965,15 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 퍼미션 설정이 수정됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "이용자 퍼미션 설정이 수정됐습니다."
+  },
+  "data": null
 }
 ```
+
+---
 
 ## 19. 퍼미션 초기화 <a id="user-permission-reset"></a>
 
@@ -902,11 +993,11 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 퍼미션 설정이 초기화 되었습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "이용자 퍼미션 설정이 초기화 되었습니다."
+  },
+  "data": null
 }
 ```
 
@@ -915,6 +1006,11 @@ console.log(data_to_send);
 ## 20. 이용자 로그인 <a id="user-auth"></a>
 
 ### `POST /api/user/auth`
+
+### Webhook
+
+- event: user
+- action: auth
 
 ### permission
 
@@ -925,22 +1021,22 @@ console.log(data_to_send);
 | param         | type  |  data   | required | desc                                                                          |
 | ------------- | :---: | :-----: | :------: | ----------------------------------------------------------------------------- |
 | userid        | query | string  |    O     |                                                                               |
-| userpw        | query | string  |    O     |                                                                               |
+| userpw        | query | string  |    O     | SHA256 해시 후 base64 인코딩                                                  |
 | origin_server | query | string  |    O     | 접속하려는 웜홀 서버 도메인 (예: http://127.1.2.3 / https://wh.c2monster.com) |
-| outside       | query | integer |    O     | 외부 접속이면 1, 일반 내부 접속이면 0                                         |
+| outside       | query | integer |    X     | 외부 접속이면 1, 일반 내부 접속이면 0. 기본값은 0                             |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"token": "nwefisdjijqwdf.ewijidsijf.sdijiij",
-		"expires": 81283182312
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "token": "nwefisdjijqwdf.ewijidsijf.sdijiij",
+    "expires": 81283182312
+  }
 }
 ```
 
@@ -967,11 +1063,11 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 급여 정보가 수정됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "이용자 급여 정보가 수정됐습니다."
+  },
+  "data": null
 }
 ```
 
@@ -998,11 +1094,11 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "이용자 업무일 정보가 수정됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "이용자 업무일 정보가 수정됐습니다."
+  },
+  "data": null
 }
 ```
 
@@ -1026,22 +1122,42 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"user_roles": [
-			{
-				"role_idx": "1",
-				"name": "artist"
-			},
-			{
-				"role_idx": "2",
-				"name": "admin"
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "user_roles": [
+      {
+        "idx": "2",
+        "name": "Artist"
+      },
+      {
+        "idx": "5",
+        "name": "Main Supervisor"
+      },
+      {
+        "idx": "6",
+        "name": "Sub Supervisor"
+      },
+      {
+        "idx": "7",
+        "name": "Leader"
+      },
+      {
+        "idx": "8",
+        "name": "Director"
+      },
+      {
+        "idx": "9",
+        "name": "outsourcing"
+      },
+      {
+        "idx": "999",
+        "name": "set for later"
+      }
+    ]
+  }
 }
 ```
 
@@ -1050,6 +1166,11 @@ console.log(data_to_send);
 ## 24. 이용자 가입 <a id="user-join"></a>
 
 ### `POST /api/user/join`
+
+### Webhook
+
+- event: user
+- action: join
 
 ### permission
 
@@ -1070,25 +1191,29 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "가입이 완료됐습니다. 관리자 승인 후 이용할 수 있습니다."
-	},
-	"data": {
-		"user_idx": "8",
-		"user_thumbnail": "2019/05/07/abc.jpg",
-		"user_role_name": "Artist"
-	}
+  "error": {
+    "code": 200,
+    "message": "가입이 완료됐습니다. 관리자 승인 후 이용할 수 있습니다."
+  },
+  "data": {
+    "user": {
+      "idx": "8",
+      "id": "tomb",
+      "name": "Thomas Doe",
+      "user_role": {
+        "idx": "1",
+        "name": "Artist"
+      }
+    }
+  }
 }
 ```
 
 ---
 
-## 24. 마이태스트 세팅 저장<a id="mytask-setting-update"></a>
-
----
-
 ## 25. 마이태스크타입 수정 <a id="mytasktype-update"></a>
+
+### `POST /api/user/mytasktype/update`
 
 ### request
 
@@ -1101,15 +1226,131 @@ console.log(data_to_send);
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "마이태스크 세팅이 변경되었습니다."
-	},
-	"data": {}
+  "error": {
+    "code": 200,
+    "message": "마이태스크 세팅이 변경되었습니다."
+  },
+  "data": null
 }
 ```
 
-## 끝
+---
+
+## 26. 이용자 정보 조회 <a id ="user-read"></a>
+
+### `GET /api/user/{user_idx}/read`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param    | type |  data   | required | desc |
+| -------- | :--: | :-----: | :------: | ---- |
+| user_idx | path | integer |    O     |      |
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "Success"
+  },
+  "data": {
+    "user": {
+      "idx": "1",
+      "id": "c2m",
+      "name": "C2Monster",
+      "email": "contact@c2monster.com",
+      "role": "Administrator",
+      "phone": "+82 2-561-5335",
+      "mobile": "010-1234-5678",
+      "thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png",
+      "is_on": "1",
+      "teams": [
+        {
+          "idx": "2",
+          "name": "team1",
+          "description": "1 team"
+        },
+        {
+          "idx": "3",
+          "name": "team2",
+          "description": "2 team"
+        }
+      ],
+      "projects": [
+        {
+          "idx": "1",
+          "name": "Demo_Bigbuck_Bunny",
+          "description": "Demo_Bigbuck_Bunny",
+          "start_date": "2018-12-11",
+          "end_date": "2019-04-12"
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+## 27. 이용자 부가정보 업데이트 <a id ="user-meata-update"></a>
+
+### `POST /api/user/meta/update`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param         | type  |  data   | required | desc |
+| ------------- | :---: | :-----: | :------: | ---- |
+| project_idx   | query | integer |    X     |      |
+| setting_name  | query | string  |    O     |      |
+| setting_value | query |  array  |    O     |      |
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "성공."
+  },
+  "data": null
+}
+```
+
+---
+
+## 28. 이용자 급여 벌크 업데이트 <a id ="user-salary-bulk-update"></a>
+
+### `POST /api/user/salary/bulk/update`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param  | type  |  data   | required | desc                          |
+| ------ | :---: | :-----: | :------: | ----------------------------- |
+| action | query | integer |    O     | init - 초기화 / remain - 유지 |
+| yyyy   | query | string  |    O     | year (YYYY)                   |
+| mm     | query | string  |    O     | month (MM)                    |
+| salary | query | integer |    X     | init일 때 초기 세팅 금액      |
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "성공."
+  },
+  "data": null
+}
+```
+
+---
 
 ## 끝
 
@@ -1138,3 +1379,6 @@ console.log(data_to_send);
 [비이용자 역할 목록 조회]: #guest-role-list
 [이용자 가입]: #user-join
 [마이태스크타입 수정]: #mytasktype-update
+[이용자 정보 조회]: #user-read
+[이용자 부가정보 업데이트]: #user-meta-update
+[이용자 급여 벌크 업데이트]: #user-salary-bulk-update

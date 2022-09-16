@@ -2,21 +2,30 @@
 
 ## 목차
 
-| 내용                           | slug                                                          |    서버 구현     | 웹 적용 |
-| :----------------------------- | :------------------------------------------------------------ | :--------------: | :-----: |
-| 1. [채널 목록 조회]            | /api/message/channel/list                                     |       GET        |    O    |
-| 2. [멤버 조회]                 | ~~/api/message/user/list~~                                    | 참조<sup>1</sup> |    O    |
-| 3. [멤버 검색]                 | ~~/api/message/user/search~~                                  | 참조<sup>1</sup> |    O    |
-| 4. [채널 생성]                 | /api/message/channel/create                                   |       POST       |    O    |
-| 5. [메시지 전송]               | /api/message/channel/{channel_idx}/message/create             |       POST       |    O    |
-| 6. [메시지 조회]               | /api/message/channel/{channel_idx}/message/list               |       POST       |    O    |
-| 7. [메시지 계속 조회]          | /api/message/channel/{channel_idx}/message/{message_idx}/list |       POST       |    O    |
-| 8. [채널 탈퇴]                 | /api/message/channel/{channel_idx}/delete                     |       POST       |    O    |
-| 9. [시스템 메시지 조회]        | /api/message/system/message/list                              |       POST       |    O    |
-| 10. [시스템 메시지 계속 조회]  | /api/message/system/message/{message_idx}/list                |       POST       |    O    |
-| 11. [채널 참가 인원 조회]      | /api/message/channel/{channel_idx}/user/list                  |       GET        |    O    |
-| 12. [그룹 채널 기본 설정 읽기] | /api/message/channel/group/setting/read                       |       POST       |    O    |
-| 13. [시스템 메시지 조회]       | /api/system/message/read                                      |      X GET       |    X    |
+| 내용                                 | slug                                                          |    서버 구현     | 웹 적용 | 웹훅 | 로그 |
+|:-------------------------------------|:--------------------------------------------------------------|:----------------:|:-------:|:----:|:----:|
+| 1. [채널 목록 조회]                  | /api/message/channel/list                                     |       GET        |    O    |  -   |  -   |
+| 2. [멤버 조회]                       | ~~/api/message/user/list~~                                    | 참조<sup>1</sup> |    O    |  -   |  -   |
+| 3. [멤버 검색]                       | ~~/api/message/user/search~~                                  | 참조<sup>1</sup> |    O    |  -   |  -   |
+| 4. [채널 생성]                       | /api/message/channel/create                                   |       POST       |    O    |  -   |  -   |
+| 5. [메시지 전송]                     | /api/message/channel/{channel_idx}/message/create             |       POST       |    O    |  -   |  -   |
+| 6. [메시지 조회]                     | /api/message/channel/{channel_idx}/message/list               |       POST       |    O    |  -   |  -   |
+| 7. [메시지 계속 조회]                | /api/message/channel/{channel_idx}/message/{message_idx}/list |       POST       |    O    |  -   |  -   |
+| 8. [채널 탈퇴]                       | /api/message/channel/{channel_idx}/delete                     |       POST       |    O    |  -   |  -   |
+| 9. [채널 참가 인원 조회]             | /api/message/channel/{channel_idx}/user/list                  |       GET        |    O    |  -   |  -   |
+| 10. [그룹 채널 기본 설정 읽기]       | /api/message/channel/group/setting/read                       |       POST       |    O    |  -   |  -   |
+| 11. [시스템 메시지 조회]             | /api/system_message/list                                      |       GET        |    X    |  -   |  -   |
+| 12. [데스크탑 시스템 메시지 조회]    | /api/desktop/system_message/list                              |       GET        |    X    |  -   |  -   |
+| 13. [시스템 메시지 삭제]             | /api/system_message/{system_message_idx}/delete               |       POST       |    O    |  -   |  -   |
+| 14. [시스템 메시지 전체 삭제]        | /api/system_message/all/delete                                |       POST       |    O    |  -   |  -   |
+| 15. [시스템 메시지 비활성화]         | /api/system_message/{system_message_idx}/deactivate           |       POST       |    X    |  -   |  -   |
+| 16. [시스템 메시지 전체 비활성화]    | /api/system_message/all/deactivate                            |       POST       |    X    |  -   |  -   |
+| 17. [시스템 메시지 활성화]           | /api/system_message/{system_message_idx}/activate             |       POST       |    X    |  -   |  -   |
+| 18. [시스템 메시지 전체 활성화]      | /api/system_message/all/activate                              |       POST       |    X    |  -   |  -   |
+| 19. [시스템 메시지 활성/비활성 토글] | /api/system_message/{system_message_idx}/activation/toggle    |       POST       |    X    |  -   |  -   |
+| 20. [시스템 메시지 북마크 등록]      | /api/system_message/{system_message_idx}/favorite             |       POST       |    X    |  -   |  -   |
+| 21. [시스템 메시지 북마크 해제]      | /api/system_message/{system_message_idx}/unfavorite           |       POST       |    X    |  -   |  -   |
+| 22. [시스템 메시지 북마크 토글]      | /api/system_message/{system_message_idx}/favorite/toggle      |       POST       |    X    |  -   |  -   |
 
 - 참조<sup>1</sup> - /api/user/list 이용 (user.md 참조)
 
@@ -42,7 +51,7 @@
 ### request
 
 | param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
+|-------|:----:|:----:|:--------:|------|
 | X     |  X   |  X   |    X     | X    |
 
 ### response
@@ -98,7 +107,7 @@
 ### request
 
 | param      | type  |  data   |           required           | desc                                           |
-| ---------- | :---: | :-----: | :--------------------------: | ---------------------------------------------- |
+|------------|:-----:|:-------:|:----------------------------:|------------------------------------------------|
 | is_group   | query | integer |              O               | 0 - 개인 채널 / 1 - 그룹 채널                  |
 | name       | query | string  | O (그룹 채널), X (개인 채널) | 채널 이름. 개인 채널인 경우는 서버에서 무시함. |
 | user_idx[] | query | integer |              O               | 채널에 참여할 이용자(들)의 인덱스              |
@@ -134,7 +143,7 @@
 ### request
 
 | param       | type  |  data   | required | desc                          |
-| ----------- | :---: | :-----: | :------: | ----------------------------- |
+|-------------|:-----:|:-------:|:--------:|-------------------------------|
 | channel_idx | path  | integer |    O     | 채널 인덱스                   |
 | is_group    | query | integer |    O     | 0 - 개인 채널 / 1 - 그룹 채널 |
 | message     | query | string  |    O     | 전송하는 메시지 내용          |
@@ -170,7 +179,7 @@
 ### request
 
 | param       | type |  data   | required | desc |
-| ----------- | :--: | :-----: | :------: | ---- |
+|-------------|:----:|:-------:|:--------:|------|
 | channel_idx | path | integer |    O     |      |
 
 ### response
@@ -225,7 +234,7 @@
 ### request
 
 | param       | type |  data   | required | desc                                          |
-| ----------- | :--: | :-----: | :------: | --------------------------------------------- |
+|-------------|:----:|:-------:|:--------:|-----------------------------------------------|
 | channel_idx | path | integer |    O     |                                               |
 | message_idx | path | integer |    O     | 이 메시지 인덱스보다 오래된 메시지만 읽어들임 |
 
@@ -282,7 +291,7 @@
 ### request
 
 | param       | type  |  data   | required | desc                          |
-| ----------- | :---: | :-----: | :------: | ----------------------------- |
+|-------------|:-----:|:-------:|:--------:|-------------------------------|
 | channel_idx | path  | integer |    O     | 채널 인덱스                   |
 | is_group    | query | integer |    O     | 0 - 개인 채널 / 1 - 그룹 채널 |
 
@@ -302,96 +311,7 @@
 
 ---
 
-## 9. 시스템 메시지 조회 <a id="#message-system-read"></a>
-
-### `POST /api/message/system/message/list`
-
-### permission
-
-- `permission.do_message`
-
-### request
-
-| param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
-| X     |  X   |  X   |    X     | X    |
-
-### response
-
-- 이용자와 직접 관련 있는 메시지는 `user_idx` ~ `user_thumbnail` 값이 존재함. 이용자 썸네일을 표시함.
-- 이용자를 특정할 수 없는 메시지는 `user_idx` ~ `user_thumbnail` 이 null 임. 기본 시스템 아이콘을 표시함.
-
-```json
-{
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"messages": [
-			{
-				"message_idx": "1",
-				"message": "hello, world.",
-				"date": "2018-11-15 08:43:38",
-				"user_idx": null,
-				"user_id": null,
-				"user_name": null,
-				"user_thumbnail": null
-			},
-			{
-				"message_idx": "2",
-				"message": "wow",
-				"date": "2010-03-10 08:43:38",
-				"user_idx": "2",
-				"user_id": "c3m",
-				"user_name": "111-222-3333",
-				"user_thumbnail": ""
-			}
-		]
-	}
-}
-```
-
-## 10. 시스템 메시지 계속 조회 <a id="#message-system-read-more"></a>
-
-### `POST /api/message/system/message/{message_idx}/list`
-
-### permission
-
-- `permission.do_message`
-
-### request
-
-| param       | type |  data   | required | desc                                            |
-| ----------- | :--: | :-----: | :------: | ----------------------------------------------- |
-| message_idx | path | integer |    O     | 이 메시지 인덱스보다 오래된 메시지만 불러오도록 |
-
-### response
-
-```json
-{
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"messages": [
-			{
-				"message_idx": "7",
-				"message": "감자는 감자",
-				"date": "2019-01-27 14:52:56"
-			},
-			{
-				"message_idx": "8",
-				"message": "햄버거는 햄버거",
-				"date": "2019-01-27 14:53:01"
-			}
-		]
-	}
-}
-```
-
-## 11. 채널 참가 인원 조회 <a id="message-group-memeber-list"></a>
+## 9. 채널 참가 인원 조회 <a id="message-group-memeber-list"></a>
 
 ### `GET /api/message/channel/{channel_idx}/member/list`
 
@@ -402,7 +322,7 @@
 ### request
 
 | param       | type |  data   | required | desc |
-| ----------- | :--: | :-----: | :------: | ---- |
+|-------------|:----:|:-------:|:--------:|------|
 | channel_idx | path | integer |    O     |      |
 
 ### response
@@ -446,7 +366,7 @@
 
 ---
 
-## 12. 그룹 채널 기본 설정 읽기 <a id="group-channel-setting-read"></a>
+## 10. 그룹 채널 기본 설정 읽기 <a id="group-channel-setting-read"></a>
 
 - 기본적으로 테스크 디테일 모달에서 이용.
 - 해당 샷/에셋을 작업하는 아티스트(테스크 디테일 모달의 progress 영역)가 기본으로 선택되도록 하기 위함.
@@ -460,7 +380,7 @@
 ### request
 
 | param       | type  |  data   | required | desc          |
-| ----------- | :---: | :-----: | :------: | ------------- |
+|-------------|:-----:|:-------:|:--------:|---------------|
 | project_idx | query | integer |    O     |               |
 | task_idx    | query | integer |    O     |               |
 | kind        | query | string  |    O     | shot or asset |
@@ -492,13 +412,19 @@
 
 ---
 
-## 13. 시스템 메시지 조회 <a id="system-message-read"></a>
+## 11. 시스템 메시지 조회 <a id="system-message-list"></a>
+
+### `GET /api/system_message/list`
+
+### permission
+
+- all
 
 ### request
 
 | param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
-| x     |  x   |  x   |    x     |      |
+|-------|:----:|:----:|:--------:|------|
+| X     |  X   |  X   |    X     |      |
 
 ### response
 
@@ -508,45 +434,534 @@
 		"code": 200,
 		"message": "성공"
 	},
-  "data" : [
-    {
-      "Work Type":"shot",
-      "Project":"Big_Buck_Bunny",
-      "Work Name":"s0010_c0010",
-      "Task Name": "Comp",
-      "User": "C2M",
-      "Message": "[Task Name] [Start Date]~[End Date]",
-      "Request time": "2019/12/17 18:29"
-    },
-    {
-      "Work Type":"shot",
-      "Project":"Big_Buck_Bunny",
-      "Work Name":"s0010_c0010",
-      "Task Name": "Comp",
-      "User": "C2M",
-      "Message": "[Task Name] [Start Date]~[End Date]",
-      "Request time": "2019/12/17 18:29"
-    },
-    {
-      "Work Type":"shot",
-      "Project":"Big_Buck_Bunny",
-      "Work Name":"s0010_c0010",
-      "Task Name": "Comp",
-      "User": "C2M",
-      "Message": "[Task Name] [Start Date]~[End Date]",
-      "Request time": "2019/12/17 18:29"
-    },
-    {
-      "Work Type":"shot",
-      "Project":"Big_Buck_Bunny",
-      "Work Name":"s0010_c0010",
-      "Task Name": "Comp",
-      "User": "C2M",
-      "Message": "[Task Name] [Start Date]~[End Date]",
-      "Request time": "2019/12/17 18:29"
-    }
-  ]
+	"data": {
+		"system_messages": [
+			{
+				"idx": "3",
+				"type": {
+					"idx": "3",
+					"name": "Version Created"
+				},
+				"target": {
+					"version": {
+						"idx": "1",
+						"name": "big_s0010_c0010_anim_v001"
+					}
+				},
+				"location": {
+					"project": {
+						"idx": "1",
+						"name": "Demo_Bigbuck_Bunny",
+						"description": "Demo_Bigbuck_Bunny",
+						"is_on": "1",
+						"start_date": "2018-12-11",
+						"end_date": "2019-04-12"
+					},
+					"episode": {
+						"idx": "1",
+						"name": "Ep01",
+						"description": "Demo_Bigbuck_Bunny_First",
+						"is_on": "1",
+						"order": "1"
+					},
+					"sequence": {
+						"idx": "1",
+						"name": "s0010",
+						"description": "Opening Sequence",
+						"is_on": "1",
+						"sequence_order": "1",
+						"order": "1"
+					},
+					"shot": {
+						"idx": "1",
+						"name": "s0010_c0010",
+						"is_on": "1",
+						"thumbnail": "http://localhost:81/2019/04/08/24591d492b5b4b16.jpg",
+						"order": "1"
+					},
+					"tasktype": {
+						"idx": "1",
+						"name": "Animation5",
+						"description": "for animation",
+						"is_on": "1",
+						"pos": "1",
+						"color": "#DE4E4E",
+						"kind": "shot"
+					}
+				},
+				"url": "/version/1/detail",
+				"description": "버전이 리뷰 대기 중",
+				"created_time": "2021-03-31 01:33:49",
+				"is_on": "1"
+			},
+			{
+				"idx": "2",
+				"type": {
+					"idx": "2",
+					"name": "Task Updated"
+				},
+				"target": {
+					"tasktype": {
+						"idx": "15",
+						"name": "Texture",
+						"description": "Texture",
+						"is_on": "1",
+						"pos": "4",
+						"color": "#3f51b5",
+						"kind": "asset"
+					}
+				},
+				"location": {
+					"project": {
+						"idx": "1",
+						"name": "Demo_Bigbuck_Bunny",
+						"description": "Demo_Bigbuck_Bunny",
+						"is_on": "1",
+						"start_date": "2018-12-11",
+						"end_date": "2019-04-12"
+					},
+					"asset_category": {
+						"idx": "1",
+						"name": "char",
+						"description": "character",
+						"is_on": "1"
+					},
+					"asset": {
+						"idx": "1",
+						"name": "ch_bunny",
+						"is_on": "1",
+						"order": "1"
+					}
+				},
+				"url": "/asset/task/1/detail",
+				"description": "start_date 변경: 2021-04-10 → 2021-04-06",
+				"created_time": "2021-03-31 01:33:01",
+				"is_on": "2"
+			}
+		]
+	}
 }
+```
+
+---
+
+## 12. 데스크탑 시스템 메시지 조회 <a id="desktop-system-message-list"></a>
+
+### `GET /api/desktop/system_message/list`
+
+### permission
+
+- all
+
+### request
+
+| param          | type  |  data   | required | desc                                         |
+|----------------|:-----:|:-------:|:--------:|----------------------------------------------|
+| page           | query | integer |    X     | 생략 시 1                                    |
+| is_on          | query | integer |    X     | 99 - all / 1 - 미확인 / 2 - 확인             |
+| block_size     | query | integer |    X     | 생략 시 50개                                 |
+| favorite_order | query | integer |    X     | 생략 시 1 - 우선순위로 표시 / 2 - 우선순위 x |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": {
+		"system_messages": [
+			{
+				"idx": "3",
+				"type": {
+					"idx": "3",
+					"name": "Version Created"
+				},
+				"target": {
+					"version": {
+						"idx": "1",
+						"name": "big_s0010_c0010_anim_v001"
+					}
+				},
+				"location": {
+					"project": {
+						"idx": "1",
+						"name": "Demo_Bigbuck_Bunny",
+						"description": "Demo_Bigbuck_Bunny",
+						"is_on": "1",
+						"start_date": "2018-12-11",
+						"end_date": "2019-04-12"
+					},
+					"episode": {
+						"idx": "1",
+						"name": "Ep01",
+						"description": "Demo_Bigbuck_Bunny_First",
+						"is_on": "1",
+						"order": "1"
+					},
+					"sequence": {
+						"idx": "1",
+						"name": "s0010",
+						"description": "Opening Sequence",
+						"is_on": "1",
+						"sequence_order": "1",
+						"order": "1"
+					},
+					"shot": {
+						"idx": "1",
+						"name": "s0010_c0010",
+						"is_on": "1",
+						"thumbnail": "http://localhost:81/2019/04/08/24591d492b5b4b16.jpg",
+						"order": "1"
+					},
+					"tasktype": {
+						"idx": "1",
+						"name": "Animation5",
+						"description": "for animation",
+						"is_on": "1",
+						"pos": "1",
+						"color": "#DE4E4E",
+						"kind": "shot"
+					}
+				},
+				"url": "/version/1/detail",
+				"description": "버전이 리뷰 대기 중",
+				"created_time": "2021-03-31 01:33:49",
+				"is_on": "1",
+				"is_favorite": "0"
+			},
+			{
+				"idx": "2",
+				"type": {
+					"idx": "2",
+					"name": "Task Updated"
+				},
+				"target": {
+					"tasktype": {
+						"idx": "15",
+						"name": "Texture",
+						"description": "Texture",
+						"is_on": "1",
+						"pos": "4",
+						"color": "#3f51b5",
+						"kind": "asset"
+					}
+				},
+				"location": {
+					"project": {
+						"idx": "1",
+						"name": "Demo_Bigbuck_Bunny",
+						"description": "Demo_Bigbuck_Bunny",
+						"is_on": "1",
+						"start_date": "2018-12-11",
+						"end_date": "2019-04-12"
+					},
+					"asset_category": {
+						"idx": "1",
+						"name": "char",
+						"description": "character",
+						"is_on": "1"
+					},
+					"asset": {
+						"idx": "1",
+						"name": "ch_bunny",
+						"is_on": "1",
+						"order": "1"
+					}
+				},
+				"url": "/asset/task/1/detail",
+				"description": "start_date 변경: 2021-04-10 → 2021-04-06",
+				"created_time": "2021-03-31 01:33:01",
+				"is_on": "2",
+				"is_favorite": "1"
+			}
+		]
+	}
+}
+```
+
+---
+
+## 13. 시스템 메시지 삭제 <a id="system-message-delete"></a>
+
+### `POST /api/system_message/{system_message_idx}/delete`
+
+### permission
+
+- all
+
+### request
+
+| param              | type |  data   | required | desc |
+|--------------------|:----:|:-------:|:--------:|------|
+| system_message_idx | path | integer |    O     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "삭제했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 14. 시스템 메시지 전체 삭제 <a id="system-message-all-delete"></a>
+
+### `POST /api/system_message/all/delete`
+
+### permission
+
+- all
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     | x    |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "삭제했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 15. 시스템 메시지 비활성화 <a id="system-message-deactivate"></a>
+
+### `POST /api/system_message/{system_message_idx}/deactivate`
+
+### permission
+
+- all
+
+### request
+
+| param              | type |  data   | required | desc |
+|--------------------|:----:|:-------:|:--------:|------|
+| system_message_idx | path | integer |    O     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "비활성화했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 16. 시스템 메시지 전체 비활성화 <a id="system-message-all-deactivate"></a>
+
+### `POST /api/system_message/all/deactivate`
+
+### permission
+
+- all
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     | x    |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "비활성화했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 17. 시스템 메시지 활성화 <a id="system-message-activate"></a>
+
+### `POST /api/system_message/{system_message_idx}/activate`
+
+### permission
+
+- all
+
+### request
+
+| param              | type |  data   | required | desc |
+|--------------------|:----:|:-------:|:--------:|------|
+| system_message_idx | path | integer |    O     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "활성화했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 18. 시스템 메시지 전체 활성화 <a id="system-message-all-activate"></a>
+
+### `POST /api/system_message/all/activate`
+
+### permission
+
+- all
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     | x    |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "활성화했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 19. 시스템 메시지 활성/비활성 토글 <a id="system-message-activation-toggle"></a>
+
+### `POST /api/system_message/all/activate`
+
+### permission
+
+- all
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     | x    |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "활성화했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 20. 시스템 메시지 북마크 등록 <a id="system-message-favorite"></a>
+
+### `POST /api/system_message/{system_message_idx}/favorite`
+
+### permission
+
+- all
+
+### request
+
+| param              | type |  data   | required | desc |
+|--------------------|:----:|:-------:|:--------:|------|
+| system_message_idx | path | integer |    O     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "북마크를 등록했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 21. 시스템 메시지 북마크 해제 <a id="system-message-unfavorite"></a>
+
+### `POST /api/system_message/{system_message_idx}/unfavorite`
+
+### permission
+
+- all
+
+### request
+
+| param              | type |  data   | required | desc |
+|--------------------|:----:|:-------:|:--------:|------|
+| system_message_idx | path | integer |    O     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "북마크를 해제했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 22. 시스템 메시지 북마크 토글 <a id="system-message-favorite-toggle"></a>
+
+### `POST /api/system_message/{system_message_idx}/favorite/toggle`
+
+### permission
+
+- all
+
+### request
+
+| param              | type |  data   | required | desc |
+|--------------------|:----:|:-------:|:--------:|------|
+| system_message_idx | path | integer |    O     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "북마크를 등록했습니다."
+	},
+	"data": null
+}
+```
+
+---
 
 ## 끝
 
@@ -558,8 +973,17 @@
 [메시지 조회]: #message-message-read
 [메시지 계속 조회]: #message-message-read-more
 [채널 탈퇴]: #message-channel-delete
-[시스템 메시지 조회]: #message-system-read
-[시스템 메시지 계속 조회]: #message-system-read-more
 [채널 참가 인원 조회]: #message-group-memeber-list
 [그룹 채널 기본 설정 읽기]: #group-channel-setting-read
-```
+[시스템 메시지 조회]: #system-message-list
+[시스템 메시지 조회]: #desktop-system-message-list
+[시스템 메시지 삭제]: #system-message-delete
+[시스템 메시지 전체 삭제]: #system-message-all-delete
+[시스템 메시지 비활성화]: #system-message-deactivate
+[시스템 메시지 전체 비활성화]: #system-message-all-deactivate
+[시스템 메시지 활성화]: #system-message-activate
+[시스템 메시지 전체 활성화]: #system-message-all-activate
+[시스템 메시지 활성/비활성 토글]: #system-message-activation-toggle
+[시스템 메시지 북마크 등록]: #system-message-favorite
+[시스템 메시지 북마크 해글]: #system-message-unfavorite
+[시스템 메시지 북마크 토글]: #system-message-favorite-toggle

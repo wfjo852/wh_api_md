@@ -2,15 +2,15 @@
 
 ## 목차
 
-| 내용                            | slug                                                                                                        | 서버 구현 | 웹 적용 |
-| :------------------------------ | :---------------------------------------------------------------------------------------------------------- | :-------: | :-----: |
-| 1. [샷 에피소드 조회]           | /api/project/{project_idx}/episode/{episode_idx}/gantt/read                                                 |    GET    |    O    |
-| 2. [샷 시퀀스 조회]             | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/gantt/read                         |    GET    |    O    |
-| 3. [샷 태스크 조회]             | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/tasktype/{tasktype_idx}/gantt/read |    GET    |    O    |
-| 4. [에셋 카테고리 조회]         | /api/project/{project_idx}/category/{category_idx}/gantt/read                                               |    GET    |    O    |
-| 5. [에셋 태스크 조회]           | /api/project/{project_idx}/category/{category_idx}/tasktype/{tasktype_idx}/gantt/read                       |    GET    |    O    |
-| 6. [샷 태스크 일정 정보 저장]   | /api/project/{project_idx}/gantt/shot/task/update                                                           |   POST    |    O    |
-| 7. [에셋 태스크 일정 정보 저장] | /api/project/{project_idx}/gantt/asset/task/update                                                          |   POST    |    O    |
+| 내용                            | slug                                                                                                        | 서버 구현 | 웹 적용 | 웹훅 | 로그 |
+| :------------------------------ | :---------------------------------------------------------------------------------------------------------- | :-------: | :-----: | :--: | :--: |
+| 1. [샷 에피소드 조회]           | /api/project/{project_idx}/episode/{episode_idx}/gantt/read                                                 |    GET    |    O    |  -   |  -   |
+| 2. [샷 시퀀스 조회]             | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/gantt/read                         |    GET    |    O    |  -   |  -   |
+| 3. [샷 태스크 조회]             | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/tasktype/{tasktype_idx}/gantt/read |    GET    |    O    |  -   |  -   |
+| 4. [에셋 카테고리 조회]         | /api/project/{project_idx}/category/{category_idx}/gantt/read                                               |    GET    |    O    |  -   |  -   |
+| 5. [에셋 태스크 조회]           | /api/project/{project_idx}/category/{category_idx}/tasktype/{tasktype_idx}/gantt/read                       |    GET    |    O    |  -   |  -   |
+| 6. [샷 태스크 일정 정보 저장]   | /api/project/{project_idx}/gantt/shot/task/update                                                           |   POST    |    O    |  -   |  -   |
+| 7. [에셋 태스크 일정 정보 저장] | /api/project/{project_idx}/gantt/asset/task/update                                                          |   POST    |    O    |  -   |  -   |
 
 - O\* - 뷰에 직접 구현
 - O\*\* - api 없이 콘트롤러에 직접 구현

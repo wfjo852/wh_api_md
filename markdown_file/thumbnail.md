@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 내용                          | slug                                                                        | 서버 구현 | 웹 적용 |
-| :---------------------------- | :-------------------------------------------------------------------------- | :-------: | :-----: |
-| 1. [샷 썸네일 벌크 임시 등록] | /api/project/{project_idx}/episode/{episode_idx}/shot/thumbnail/bulk/create |   POST    |    O    |
-| 2. [샷 썸네일 벌크 목록 조회] | /api/project/{project_idx}/episode/{episode_idx}/shot/thumbnail/bulk/list   |    GET    |    O    |
-| 3. [샷 썸네일 벌크 적용]      | /api/project/{project_idx}/episode/{episode_idx}/shot/thumbnail/bulk/update |   POST    |    O    |
+| 내용                          | slug                                                                        | 서버 구현 | 웹 적용 | 웹훅 | 로그 |
+| :---------------------------- | :-------------------------------------------------------------------------- | :-------: | :-----: | :--: | :--: |
+| 1. [샷 썸네일 벌크 임시 등록] | /api/project/{project_idx}/episode/{episode_idx}/shot/thumbnail/bulk/create |   POST    |    O    |  -   |  -   |
+| 2. [샷 썸네일 벌크 목록 조회] | /api/project/{project_idx}/episode/{episode_idx}/shot/thumbnail/bulk/list   |    GET    |    O    |  -   |  -   |
+| 3. [샷 썸네일 벌크 적용]      | /api/project/{project_idx}/episode/{episode_idx}/shot/thumbnail/bulk/update |   POST    |    O    |  -   |  -   |
 
 ---
 
@@ -78,17 +78,17 @@
 	"data": {
 		"shots": [
 			{
-        "sequence_idx": "1",
+				"sequence_idx": "1",
 				"sequence_name": "s0010",
-        "shot_idx": "1",
+				"shot_idx": "1",
 				"shot_name": "c0010",
 				"shot_thumbnail_original": "s0010+s0010_c0010.jpg",
 				"shot_thumbnail_uploaded": "http://localhost:81/2019/02/21/05ed16a5d80f3f4b.png"
 			},
 			{
-        "sequence_idx": "1",
+				"sequence_idx": "1",
 				"sequence_name": "s0010",
-        "shot_idx": "1",
+				"shot_idx": "1",
 				"shot_name": "c0020",
 				"shot_thumbnail_original": "s0010+s0010_c0020.jpg",
 				"shot_thumbnail_uploaded": "http://localhost:81/2019/02/21/9234jkflse012.png"

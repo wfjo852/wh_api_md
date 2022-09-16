@@ -2,15 +2,15 @@
 
 ## 목차
 
-| 내용                     | slug                                           | 서버 구현 | 웹 적용 |
-| :----------------------- | :--------------------------------------------- | :-------: | :-----: |
-| 1. [회사/조직 정보 조회] | /api/org/{org_id}/read                         |    GET    |    O    |
-| 2. [회사/조직 정보 수정] | /api/org/{org_id}/info/update                  |   POST    |    O    |
-| 3. [경로 정보 수정]      | /api/org/{org_id}/path/update                  |   POST    |    O    |
-| 4. [워크데이 조회]       | /api/org/{org_id}/workday/read                 |    GET    |    O    |
-| 5. [워크데이 수정]       | /api/org/{org_id}/workday/update               |   POST    |    O    |
-| 6. [하루 근무 시간 수정] | /api/org/{org_id}/working_hours_per_day/update |   POST    |    X    |
-| 7. [초과 수당 배수 수정] | /api/org/{org_id}/overtime_multiple/update     |   POST    |    X    |
+| 내용                     | slug                                           | 서버 구현 | 웹 적용 | 웹훅 | 로그 |
+| :----------------------- | :--------------------------------------------- | :-------: | :-----: | :--: | :--: |
+| 1. [회사/조직 정보 조회] | /api/org/{org_id}/read                         |    GET    |    O    |  -   |  -   |
+| 2. [회사/조직 정보 수정] | /api/org/{org_id}/info/update                  |   POST    |    O    |  -   |  -   |
+| 3. [경로 정보 수정]      | /api/org/{org_id}/path/update                  |   POST    |    O    |  -   |  -   |
+| 4. [워크데이 조회]       | /api/org/{org_id}/workday/read                 |    GET    |    O    |  -   |  -   |
+| 5. [워크데이 수정]       | /api/org/{org_id}/workday/update               |   POST    |    O    |  -   |  -   |
+| 6. [하루 근무 시간 수정] | /api/org/{org_id}/working_hours_per_day/update |   POST    |    X    |  -   |  -   |
+| 7. [초과 수당 배수 수정] | /api/org/{org_id}/overtime_multiple/update     |   POST    |    X    |  -   |  -   |
 
 ---
 
@@ -44,8 +44,8 @@
 		"message": "성공"
 	},
 	"data": {
-		"org_info": {
-			"org_name": "def",
+		"org": {
+			"name": "company",
 			"logo_thumbnail": "",
 			"fileserver_windows": "x:/",
 			"fileserver_osx": "/Users/std/Documents/",
@@ -53,10 +53,11 @@
 			"artist_windows": "d:/art/",
 			"artist_osx": "/Users/art/Documents/",
 			"artist_linux": "/home/art/",
-			"lang": "en",
+			"lang": "ko",
 			"port_attached": "81",
 			"working_hours_per_day": "8",
-			"overtime_multiple": "1.5"
+			"overtime_multiple": "1.5",
+			"webhook_server": "0"
 		}
 	}
 }
@@ -90,7 +91,7 @@
 {
 	"error": {
 		"code": 200,
-		"message": "회사/조직 정보를 업데이트했습니다."
+		"message": "회사/조직 정보가 수정됐습니다."
 	},
 	"data": null
 }
@@ -152,7 +153,7 @@
 {
 	"error": {
 		"code": 200,
-		"message": "성공"
+		"message": "Success"
 	},
 	"data": {
 		"workdays": {
@@ -166,16 +167,20 @@
 		},
 		"holidays": [
 			{
-				"holiday_date": "2013-11-12",
-				"holiday_desc": "fr"
-			},
-			{
-				"holiday_date": "2019-12-24",
-				"holiday_desc": "ch"
+				"holiday_date": "2020-01-01",
+				"holiday_desc": "New Year"
 			},
 			{
 				"holiday_date": "2019-12-25",
-				"holiday_desc": "ch"
+				"holiday_desc": "Christmas"
+			},
+			{
+				"holiday_date": "2019-04-10",
+				"holiday_desc": "\ud734\uc2dd."
+			},
+			{
+				"holiday_date": "2019-04-07",
+				"holiday_desc": "\uc784\uc2dc\ud734\uc77c"
 			}
 		]
 	}
@@ -271,7 +276,7 @@
 {
 	"error": {
 		"code": 200,
-		"message": "초과 수당 배수가 수정됐습니다."
+		"message": "초과 근무 배수가 수정됐습니다."
 	},
 	"data": null
 }

@@ -4,14 +4,14 @@
 
 ## 목차
 
-| 내용                  | slug                                                                            | 서버 구현 | 웹 적용 |
-| :-------------------- | :------------------------------------------------------------------------------ | :-------: | :-----: |
-| 1. [시퀀스 등록]      | /api/project/{project_idx}/episode/{episode_idx}/sequence/create                |   POST    |    O    |
-| 2. [시퀀스 정보 수정] | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/update |   POST    |    O    |
-| 3. [시퀀스 삭제]      | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/delete |   POST    |    O    |
-| 4. [시퀀스 활성화]    | /api/project/{project_idx}/sequence/{sequence_idx}/activate                     |   POST    |    O    |
-| 5. [시퀀스 비활성화]  | /api/project/{project_idx}/sequence/{sequence_idx}/deactivate                   |   POST    |    O    |
-| 6. [시퀀스 목록 조회] | /api/project/{project_idx}/episode/{episode_idx}/sequence/list                  |    GET    |    O    |
+| 내용                  | slug                                                                            | 서버 구현 | 웹 적용 |  웹훅  | 로그 |
+| :-------------------- | :------------------------------------------------------------------------------ | :-------: | :-----: | :----: | :--: |
+| 1. [시퀀스 등록]      | /api/project/{project_idx}/episode/{episode_idx}/sequence/create                |   POST    |    O    | hooked |  O   |
+| 2. [시퀀스 정보 수정] | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/update |   POST    |    O    |   -    |  O   |
+| 3. [시퀀스 삭제]      | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/delete |   POST    |    O    |   -    |  O   |
+| 4. [시퀀스 활성화]    | /api/project/{project_idx}/sequence/{sequence_idx}/activate                     |   POST    |    O    |   -    |  -   |
+| 5. [시퀀스 비활성화]  | /api/project/{project_idx}/sequence/{sequence_idx}/deactivate                   |   POST    |    O    |   -    |  -   |
+| 6. [시퀀스 목록 조회] |                   |    GET    |    O    |   -    |  -   |
 
 - 참조<sup>1</sup> - /api/project/{project_idx}/episode/list[/{detail}] (project-shot-overview.md 참조)
 
@@ -27,6 +27,11 @@
 ## 1. 시퀀스 등록 <a id="project-sequence-create"></a>
 
 ### `POST /api/project/{project_idx}/episode/{episode_idx}/sequence/create`
+
+### Webhook
+
+- event: sequence
+- action: create
 
 ### permission
 
@@ -50,7 +55,9 @@
 		"message": "시퀀스가 생성 되었습니다."
 	},
 	"data": {
-		"sequence_idx": 7
+		"sequence": {
+			"idx": 7
+		}
 	}
 }
 ```
@@ -67,13 +74,14 @@
 
 ### request
 
-| param         | type  |  data   | required | desc |
-| ------------- | :---: | :-----: | :------: | ---- |
-| project_idx   | path  | integer |    O     |      |
-| episode_idx   | path  | integer |    O     |      |
-| sequence_idx  | path  | integer |    O     |      |
-| sequence_name | query | string  |    O     |      |
-| description   | query | string  |    X     |      |
+| param        | type  |  data   | required | desc             |
+| ------------ | :---: | :-----: | :------: | ---------------- |
+| project_idx  | path  | integer |    O     |                  |
+| episode_idx  | path  | integer |    O     |                  |
+| sequence_idx | path  | integer |    O     |                  |
+| column       | query | string  |    O     |                  |
+| old_val      | query | string  |    O     | 공백일 수는 있음 |
+| new_val      | query | string  |    O     | 공백일 수는 있음 |
 
 ### response
 
@@ -83,7 +91,13 @@
 		"code": 200,
 		"message": "시퀀스 정보가 수정됐습니다."
 	},
-	"data": null
+	"data": {
+		"sequence": {
+			"idx": "4",
+			"column": "description",
+			"value": "until 4"
+		}
+	}
 }
 ```
 
@@ -179,7 +193,7 @@
 
 ## 6. 시퀀스 목록 조회 <a id="project-sequence-list"></a>
 
-### `GET /api/project/project/{project_idx}/episode/{episode_idx}/sequence/list`
+### `GET /api/project/{project_idx}/episode/{episode_idx}/sequence/list`
 
 ### permission
 
@@ -198,29 +212,41 @@
 {
 	"error": {
 		"code": 200,
-		"message": "성공"
+		"message": "Success"
 	},
 	"data": {
 		"sequences": [
 			{
-				"sequence_idx": "1",
+				"idx": "1",
 				"name": "s0010",
-				"sequence_order": "1",
-				"description": "설명"
+				"description": "Opening Sequence",
+				"sequence_order": "1"
 			},
 			{
-				"sequence_idx": "2",
+				"idx": "2",
 				"name": "s0020",
-				"sequence_order": "2",
-				"description": "설명"
+				"description": "Fighting in the Jungle",
+				"sequence_order": "2"
 			},
 			{
-				"sequence_idx": "3",
+				"idx": "3",
 				"name": "s0030",
-				"sequence_order": "3",
-				"description": "설명"
+				"description": "Ending Sequence",
+				"sequence_order": "3"
 			}
-		]
+		],
+		"project": {
+			"idx": "1",
+			"name": "Demo_Bigbuck_Bunny",
+			"description": "Demo_Bigbuck_Bunny",
+			"start_date": "2018-12-11",
+			"end_date": "2019-04-12"
+		},
+		"episode": {
+			"idx": "1",
+			"name": "Ep01",
+			"description": "Demo_Bigbuck_Bunny_First"
+		}
 	}
 }
 ```

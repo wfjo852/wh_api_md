@@ -2,21 +2,24 @@
 
 ## 목차
 
-| 내용                             | slug                                                                                    | 서버 구현 | 웹 적용 |
-| :------------------------------- | :-------------------------------------------------------------------------------------- | :-------: | :-----: |
-| 1. [샷 등록]                     | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/shot/create    |   POST    |    O    |
-| 2. [샷 정보 수정]                | /api/project/{project_idx}/shot/{shot_idx}/update                                       |   POST    |    O    |
-| 3. [샷 삭제]                     | /api/project/{project_idx}/shot/{shot_idx}/delete                                       |   POST    |    O    |
-| 4. [샷 정보 조회]                | /api/project/{project_idx}/shot/{shot_idx}/read                                         |    GET    |    X    |
-| 5. [샷 썸네일 업데이트]          | /api/project/{project_idx}/shot/{shot_idx}/thumbnail/update                             |   POST    |    O    |
-| 6. [샷 목록 조회]                | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/shot/list      |    GET    |    O    |
-| 7. [샷 벌크 등록]                | /api/project/{project_idx}/shot/bulk/create                                             |   POST    |    O    |
-| 8. [샷 벌크 목록 조회]           | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/shot/bulk/list |    GET    |    O    |
-| 9. [샷에 관련된 에셋 추가]       | /api/project/{project_idx}/shot/{shot_idx}/asset/add                                    |   POST    |    O    |
-| 10. [샷에 관련된 에셋 벌크 추가] | /api/project/{project_idx}/shot/{shot_idx}/asset/bulk/add                               |   POST    |    X    |
-| 11. [샷에 관련된 에셋 제거]      | /api/project/{project_idx}/shot/{shot_idx}/asset/remove                                 |   POST    |    O    |
-| 12. [샷에 관련된 에셋 벌크 제거] | /api/project/{project_idx}/shot/{shot_idx}/asset/bulk/remove                            |   POST    |    X    |
-| 14. [릴레이션 오버뷰 조회]       | /api/project/{project_idx}/episode/{episode_idx}/shot/asset/relation/overview/read      |    GET    |    O    |
+| 내용                          | slug                                                                                 | 서버 구현 | 웹 적용 |  웹훅  | 로그 |
+| :---------------------------- | :----------------------------------------------------------------------------------- | :-------: | :-----: | :----: | :--: |
+| 1. [샷 등록]                  | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/shot/create |   POST    |    O    | hooked |  O   |
+| 2. [샷 정보 수정]             | /api/project/{project_idx}/shot/{shot_idx}/update                                    |   POST    |    O    | hooked |  O   |
+| 3. [샷 벌크 삭제]             | /api/project/{project_idx}/shot/bulk/delete                                          |   POST    |    O    |   -    |  O   |
+| 4. [샷 정보 조회]             | /api/project/{project_idx}/shot/{shot_idx}/read                                      |    GET    |    X    |   -    |  -   |
+| 5. [샷 썸네일 업데이트]       | /api/project/{project_idx}/shot/{shot_idx}/thumbnail/update                          |   POST    |    O    |   -    |  O   |
+| 6. [샷 목록 조회]             | /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/shot/list   |    GET    |    O    |   -    |  -   |
+| 7. [샷 벌크 등록]             | /api/project/{project_idx}/shot/bulk/create                                          |   POST    |    O    | hooked |  O   |
+| 8. [샷 벌크 목록 조회]        | /api/project/{project_idx}/episode/{episode_idx}/shot/bulk/list                      |    GET    |    O    |   -    |  -   |
+| 9. [에피소드 내 샷 목록 조회] | /api/project/{project_idx}/episode/{episode_idx}/shot/list                           |    GET    |    X    |   -    |  -   |
+
+## 목차 V2
+
+| 내용                    | slug                     | 서버 구현 | 웹 적용 |  웹훅  | 로그 |
+| :---------------------- | :----------------------- | :-------: | :-----: | :----: | :--: |
+| A1. [샷 계열 벌크 검증] | /api/shots/bulk/validate |   POST    |    O    |   -    |  -   |
+| A2. [샷 정보 수정]      | /api/shots/{shot_idx}/update        |   POST    |    O    | hooked |  O   |
 
 ---
 
@@ -30,6 +33,11 @@
 ## 1. 샷 등록 <a id="project-shot-create"></a>
 
 ### `POST /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/shot/create`
+
+### Webhook
+
+- event: shot
+- action: create
 
 ### permission
 
@@ -52,50 +60,60 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "샷이 등록됐습니다."
-	},
-	"data": {
-		"shot_idx": "2103",
-		"shot_name": "s0010_c0010",
-		"shot_order": "114",
-		"shot_thumbnail": null,
-		"status_idx": "1",
-		"project_idx": "1",
-		"episode_idx": "1",
-		"episode_name": "ep01",
-		"sequence_idx": "1",
-		"sequence_name": "s0010",
-		"shot_status_name": "wip",
-		"description": null,
-		"location": null,
-		"note": null,
-		"length": null,
-		"handle_in": null,
-		"handle_out": null,
-		"frame_in": null,
-		"frame_out": null,
-		"timecode_in": null,
-		"timecode_out": null,
-		"importance": "0",
-		"difficulty": null,
-		"original_path": null,
-		"camera_clip": null,
-		"camera_name": null,
-		"lens_type": null,
-		"focal_length": null,
-		"grip": null,
-		"camera_filter": null,
-		"iso": null,
-		"shutter_speed": null,
-		"f_stop": null,
-		"stereo_type": null,
-		"stereo_iod": null,
-		"stereo_converged_point": null,
-		"stereo_rig": null,
-		"camera_note": null
-	}
+  "error": {
+    "code": 200,
+    "message": "샷이 등록됐습니다."
+  },
+  "data": {
+    "shot": {
+      "idx": "32",
+      "name": "s0010_c0160",
+      "order": "32",
+      "thumbnail": null,
+      "status": {
+        "idx": "1",
+        "name": "wip"
+      },
+      "project": {
+        "idx": "1"
+      },
+      "episode": {
+        "idx": "1",
+        "name": "Ep01"
+      },
+      "sequence": {
+        "idx": "1",
+        "name": "s0010"
+      },
+      "description": null,
+      "location": null,
+      "note": null,
+      "length": null,
+      "handle_in": null,
+      "handle_out": null,
+      "frame_in": null,
+      "frame_out": null,
+      "timecode_in": null,
+      "timecode_out": null,
+      "importance": "0",
+      "difficulty": null,
+      "original_path": null,
+      "camera_clip": null,
+      "camera_name": null,
+      "lens_type": null,
+      "focal_length": null,
+      "grip": null,
+      "camera_filter": null,
+      "iso": null,
+      "shutter_speed": null,
+      "f_stop": null,
+      "stereo_type": null,
+      "stereo_iod": null,
+      "stereo_converged_point": null,
+      "stereo_rig": null,
+      "camera_note": null
+    }
+  }
 }
 ```
 
@@ -105,28 +123,40 @@
 
 ### `POST /api/project/{project_idx}/shot/{shot_idx}/update`
 
+### Webhook
+
+- event: shot
+- action: update
+
 ### permission
 
 - `permission.update_shot_and_task`
 
 ### request
 
-| param    | type  |  data   | required | desc             |
-| -------- | :---: | :-----: | :------: | ---------------- |
-| shot_idx | path  | integer |    O     |                  |
-| column   | query | string  |    O     |                  |
-| old_val  | query | string  |    O     | 공백일 수는 있음 |
-| new_val  | query | string  |    O     | 공백일 수는 있음 |
+| param       | type  |  data   | required | desc             |
+| ----------- | :---: | :-----: | :------: | ---------------- |
+| project_idx | path  | integer |    O     |                  |
+| shot_idx    | path  | integer |    O     |                  |
+| column      | query | string  |    O     |                  |
+| old_val     | query | string  |    O     | 공백일 수는 있음 |
+| new_val     | query | string  |    O     | 공백일 수는 있음 |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "샷 정보가 수정됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "샷 정보가 수정됐습니다."
+  },
+  "data": {
+    "shot": {
+      "idx": 14,
+      "column": "camera_clip",
+      "value": "1"
+    }
+  }
 }
 ```
 
@@ -135,9 +165,9 @@
 
 ---
 
-## 3. 샷 삭제 <a id="project-shot-delete"></a>
+## 3. 샷 벌크 삭제 <a id="project-shot-delete"></a>
 
-### `POST /api/project/{project_idx}/shot/{shot_idx}/delete`
+### `POST /api/project/{project_idx}/shot/bulk/delete`
 
 ### permission
 
@@ -145,20 +175,20 @@
 
 ### request
 
-| param       | type |  data   | required | desc |
-| ----------- | :--: | :-----: | :------: | ---- |
-| project_idx | path | integer |    O     |      |
-| shot_idx    | path | integer |    O     |      |
+| param       | type |       data       | required | desc |
+| ----------- | :--: | :--------------: | :------: | ---- |
+| project_idx | path |     integer      |    O     |      |
+| shot_idx[]  | path | array of integer |    O     |      |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "샷이 삭제됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "샷이 삭제됐습니다."
+  },
+  "data": null
 }
 ```
 
@@ -183,22 +213,60 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"shot_idx": "4",
-		"shot_name": "s0010_c0010",
-		"shot_order": "1",
-		"shot_thumbnail": null,
-		"episode_idx": "1",
-		"episode_name": "ep01",
-		"sequence_idx": "1",
-		"sequence_name": "s0010",
-		"description": "> Comp : 1 GATE",
-		"shot_status_name": "wip"
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "shot": {
+      "idx": "1",
+      "name": "s0010_c0010",
+      "order": "1",
+      "thumbnail": "http://localhost:81/2019/04/08/24591d492b5b4b16.jpg",
+      "project": {
+        "idx": "1"
+      },
+      "episode": {
+        "idx": "1",
+        "name": "Ep01"
+      },
+      "sequence": {
+        "idx": "1",
+        "name": "s0010"
+      },
+      "status": {
+        "idx": "1",
+        "name": "wip"
+      },
+      "description": "Opening_sequence",
+      "location": "Jungle_A",
+      "note": "",
+      "length": "285",
+      "handle_in": "0",
+      "handle_out": "0",
+      "frame_in": "0",
+      "frame_out": "284",
+      "timecode_in": "00:00:00:00",
+      "timecode_out": "",
+      "importance": "0",
+      "difficulty": "",
+      "original_path": "D:\\wormhole\\wh2_test_Big_buck\\Animation\\big_s0010_c0010_anim_v001.mp4",
+      "camera_clip": null,
+      "camera_name": null,
+      "lens_type": null,
+      "focal_length": null,
+      "grip": null,
+      "camera_filter": null,
+      "iso": null,
+      "shutter_speed": null,
+      "f_stop": null,
+      "stereo_type": null,
+      "stereo_iod": null,
+      "stereo_converged_point": null,
+      "stereo_rig": null,
+      "camera_note": null
+    }
+  }
 }
 ```
 
@@ -224,14 +292,16 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "샷 썸네일이 등록됐습니다."
-	},
-	"data": {
-		"shot_idx": 4,
-		"shot_thumbnail": "http://localhost:81/2019/02/21/05ed16a5d80f3f4b.png"
-	}
+  "error": {
+    "code": 200,
+    "message": "샷 썸네일이 등록됐습니다."
+  },
+  "data": {
+    "shot": {
+      "idx": 4,
+      "thumbnail": "http://localhost:81/2019/02/21/05ed16a5d80f3f4b.png"
+    }
+  }
 }
 ```
 
@@ -257,29 +327,29 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"shots": [
-			{
-				"shot_idx": "1",
-				"name": "s0010_c0010",
-				"shot_order": "1"
-			},
-			{
-				"shot_idx": "2",
-				"name": "s0010_c0020",
-				"shot_order": "2"
-			},
-			{
-				"shot_idx": "3",
-				"name": "s0010_c0030",
-				"shot_order": "3"
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "shots": [
+      {
+        "idx": "1",
+        "name": "s0010_c0010",
+        "shot_order": "1"
+      },
+      {
+        "idx": "2",
+        "name": "s0010_c0020",
+        "shot_order": "2"
+      },
+      {
+        "idx": "3",
+        "name": "s0010_c0030",
+        "shot_order": "3"
+      }
+    ]
+  }
 }
 ```
 
@@ -289,30 +359,68 @@
 
 ### `POST /api/project/{project_idx}/shot/bulk/create`
 
+### Webhook
+
+- event: shot
+- action: bulk create
+
 ### permission
 
 - `permission.update_project`
 
 ### request
 
-| param            | type  |  data   | required | desc |
-| ---------------- | :---: | :-----: | :------: | ---- |
-| project_idx      | path  | integer |    O     |      |
-| episode_idx      | query | integer |    O     |      |
-| sequence_idx     | query | integer |    O     |      |
-| shot_name[]      | query | string  |    O     |      |
-| description[]    | query | string  |    O     |      |
-| direction_note[] | query | string  |    O     |      |
+| param                | type  |       data       | required | desc                                              |
+| -------------------- | :---: | :--------------: | :------: | ------------------------------------------------- |
+| project_idx          | path  |     integer      |    O     |                                                   |
+| episode_idx          | query |     integer      |    O     |                                                   |
+| sequence_name[]      | query | array of string  |    O     | 신규인지 기존에 존재하는 시퀀스인지는 서버가 판단 |
+| shot_name[]          | query | array of string  |    O     |                                                   |
+| description[]        | query | array of string  |    O     |                                                   |
+| direction_note[]     | query | array of string  |    O     |                                                   |
+| attached[]           | query |  array of file   |    X     |                                                   |
+| length[]             | query | array of integer |    X     |                                                   |
+| timecode_in[]        | query | array of string  |    X     |                                                   |
+| timecode_out[]       | query | array of string  |    X     |                                                   |
+| original_edit_path[] | query | array of string  |    X     |                                                   |
+| frame_in[]           | query | array of integer |    X     |                                                   |
+| frame_out[]          | query | array of integer |    X     |                                                   |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "에피소드가 삭제 되었습니다."
-	},
-	"data": {}
+  "error": {
+    "code": 200,
+    "message": "샷이 등록됐습니다."
+  },
+  "data": {
+    "shots": [
+      {
+        "idx": "45",
+        "name": "s0020_c0110",
+        "description": "the squirrelis looking at bunny",
+        "sequence": {
+          "idx": "22",
+          "name": "s0020",
+          "description": null,
+          "sequence_order": "7"
+        }
+      },
+      {
+        "idx": "46",
+        "name": "s0020_c0120",
+        "description": "while bunny is smelling the flower, he moves",
+        "sequence": {
+          "idx": "22",
+          "name": "s0020",
+          "description": null,
+          "sequence_order": "8"
+        }
+      }
+    ],
+    "duplicated": ["s0020_c0080", "s0020_c0090"]
+  }
 }
 ```
 
@@ -320,198 +428,7 @@
 
 ## 8. 샷 벌크 목록 조회 <a id="#project-shot-list"></a>
 
-### `GET /api/project/{project_idx}/episode/{episode_idx}/sequence/{sequence_idx}/shot/bulk/list`
-
-### permission
-
-- `permission.update_project`
-
-### request
-
-| param        | type |  data   | required | desc |
-| ------------ | :--: | :-----: | :------: | ---- |
-| project_idx  | path | integer |    O     |      |
-| episode_idx  | path | integer |    O     |      |
-| sequence_idx | path | integer |    O     |      |
-
-### response
-
-```json
-{
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"shots": [
-			{
-				"shot_name": "s0010_c0010",
-				"shot_thumbnail": "",
-				"description": "",
-				"tasks": {
-					"Lookdev": {
-						"task_idx": "538",
-						"duration_init": "0",
-						"user_idx": "1",
-						"user_name": "cccc"
-					},
-					"Photo": {
-						"task_idx": "535",
-						"duration_init": "0",
-						"user_idx": "1",
-						"user_name": "cccc"
-					}
-				}
-			},
-			{
-				"shot_name": "s0010_c0020",
-				"shot_thumbnail": "",
-				"description": "",
-				"tasks": {
-					"Lookdev": {
-						"task_idx": "538",
-						"duration_init": "0",
-						"user_idx": "1",
-						"user_name": "cccc"
-					},
-					"Photo": {
-						"task_idx": "535",
-						"duration_init": "0",
-						"user_idx": "1",
-						"user_name": "cccc"
-					}
-				}
-			}
-		]
-	}
-}
-```
-
----
-
-## 9. 샷에 관련된 에셋 추가 <a id="shot-asset-add"></a>
-
-### `POST /api/project/{project_idx}/shot/{shot_idx}/asset/add`
-
-### permission
-
-- `permission.update_project`
-
-### request
-
-| param       | type  |  data   | required | desc |
-| ----------- | :---: | :-----: | :------: | ---- |
-| project_idx | path  | integer |    O     |      |
-| shot_idx    | path  | integer |    O     |      |
-| asset_idx   | query | integer |    O     |      |
-
-### response
-
-```json
-{
-	"error": {
-		"code": 200,
-		"message": "에셋이 샷에 추가됐습니다."
-	},
-	"data": null
-}
-```
-
----
-
-## 10. 샷에 관련된 에셋 벌크 추가 <a id="shot-asset-bulk-add"></a>
-
-### `POST /api/project/{project_idx}/shot/{shot_idx}/asset/bulk/add`
-
-### permission
-
-- `permission.update_project`
-
-### request
-
-| param       | type  |       data       | required | desc |
-| ----------- | :---: | :--------------: | :------: | ---- |
-| project_idx | path  |     integer      |    O     |      |
-| shot_idx    | path  |     integer      |    O     |      |
-| asset_idx[] | query | array of integer |    O     |      |
-
-### response
-
-```json
-{
-	"error": {
-		"code": 200,
-		"message": "에셋이 샷에 추가됐습니다."
-	},
-	"data": null
-}
-```
-
----
-
-## 11. 샷에 관련된 에셋 제거 <a id="shot-asset-remove"></a>
-
-### `POST /api/project/{project_idx}/shot/{shot_idx}/asset/remove`
-
-### permission
-
-- `permission.update_project`
-
-### request
-
-| param       | type  |  data   | required | desc |
-| ----------- | :---: | :-----: | :------: | ---- |
-| project_idx | path  | integer |    O     |      |
-| shot_idx    | path  | integer |    O     |      |
-| asset_idx   | query | integer |    O     |      |
-
-### response
-
-```json
-{
-	"error": {
-		"code": 200,
-		"message": "에셋이 샷에서 제거됐습니다."
-	},
-	"data": null
-}
-```
-
----
-
-## 12. 샷에 관련된 에셋 벌크 제거 <a id="shot-asset-bulk-remove"></a>
-
-### `POST /api/project/{project_idx}/shot/{shot_idx}/asset/bulk/remove`
-
-### permission
-
-- `permission.update_project`
-
-### request
-
-| param       | type  |       data       | required | desc |
-| ----------- | :---: | :--------------: | :------: | ---- |
-| project_idx | path  |     integer      |    O     |      |
-| shot_idx    | path  |     integer      |    O     |      |
-| asset_idx[] | query | array of integer |    O     |      |
-
-### response
-
-```json
-{
-	"error": {
-		"code": 200,
-		"message": "에셋이 샷에서 제거됐습니다."
-	},
-	"data": null
-}
-```
-
----
-
-## 14. 릴레이션 오버뷰 조회 <a id="relation-overview-read"></a>
-
-### `GET /api/project/{project_idx}/episode/{episode_idx}/shot/asset/relation/overview/read`
+### `GET /api/project/{project_idx}/episode/{episode_idx}/shot/bulk/list`
 
 ### permission
 
@@ -526,248 +443,270 @@
 
 ### response
 
-- 연관되어 있으면 org_text, dispolay_text를 모두 "O"로 내려주세요.
-- 연관되어 있지 않으면 org_text, display_text를 모두 ""로 내려 주세요.
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "shots": [
+      {
+        "idx": "1",
+        "name": "s0010_c0010",
+        "thumbnail": "http://localhost:81/2019/04/08/24591d492b5b4b16.jpg",
+        "description": "Opening_sequence",
+        "sequence": {
+          "name": "s0010"
+        },
+        "tasks": {
+          "Animation": {
+            "idx": "4",
+            "duration_init": "3",
+            "user": {
+              "idx": "2",
+              "name": "Artist"
+            }
+          },
+          "Comp": {
+            "idx": "1",
+            "duration_init": "3",
+            "user": {
+              "idx": "1",
+              "name": "C2Monster"
+            }
+          }
+        }
+      },
+      {
+        "idx": "2",
+        "name": "s0010_c0020",
+        "thumbnail": "http://localhost:81/2019/04/08/d45d311d6b86ae96.jpg",
+        "description": "river flows",
+        "sequence": {
+          "name": "s0010"
+        },
+        "tasks": {
+          "Animation": {
+            "idx": "4",
+            "duration_init": "3",
+            "user": {
+              "idx": "2",
+              "name": "Artist"
+            }
+          },
+          "Comp": {
+            "idx": "1",
+            "duration_init": "3",
+            "user": {
+              "idx": "1",
+              "name": "C2Monster"
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+---
+
+## 9. 에피소드 내 샷 목록 조회 <a id="episode-shot-list"></a>
+
+### `GET /api/project/{project_idx}/episode/{episode_idx}/shot/list`
+
+### permission
+
+- `permission.read_project`
+
+### request
+
+| param       | type |  data   | required | desc |
+| ----------- | :--: | :-----: | :------: | ---- |
+| project_idx | path | integer |    O     |      |
+| episode_idx | path | integer |    O     |      |
+
+### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"collapsible_columns": [
-			{ "row": -2, "col": 7, "collapsible": true },
-			{ "row": -2, "col": 14, "collapsible": true }
-		],
-		"nested_headers": [
-			[
-				"Sequence",
-				"Sequence",
-				"Shot",
-				"Shot",
-				"Thumbnail",
-				"Description",
-				"Direction Note",
-				{ "label": "ch", "colspan": 7 },
-				{ "label": "env", "colspan": 6 }
-			],
-			[
-				"sequence_idx",
-				"name",
-				"-",
-				"name",
-				"-",
-				"-",
-				"-",
-				"ch_Asset01",
-				"ch_Asset02",
-				"ch_Asset03",
-				"ch_Asset04",
-				"ch_Asset05",
-				"ch_Asset06",
-				"ch_Asset07",
-				"env_Asset01",
-				"env_Asset02",
-				"env_Asset03",
-				"env_Asset04",
-				"end_Asset05",
-				"env_Asset06"
-			]
-		],
-		"overview": [
-			{
-				"sequence_idx": 1,
-				"sequence_name": "s0010",
-				"shot_idx": 1,
-				"shot_name": "s0010_c0050",
-				"shot_thumbnail": "",
-				"description": "Bunny is stretching his body",
-				"direction_note": "",
-				"assets": {
-					"ch": {
-						"ch_asset01": {
-							"asset_idx": 1,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"ch_asset02": {
-							"asset_idx": 2,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"ch_asset03": {
-							"asset_idx": 3,
-							"org_text": "",
-							"display_text": ""
-						},
-						"ch_asset04": {
-							"asset_idx": 4,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"ch_asset05": {
-							"asset_idx": 5,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"ch_asset06": {
-							"asset_idx": 6,
-							"org_text": "",
-							"display_text": ""
-						},
-						"ch_asset07": {
-							"asset_idx": 7,
-							"org_text": "O",
-							"display_text": "O"
-						}
-					},
-					"env": {
-						"env_asset01": {
-							"asset_idx": 1,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"env_asset02": {
-							"asset_idx": 2,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"env_asset03": {
-							"asset_idx": 3,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"env_asset04": {
-							"asset_idx": 4,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"env_asset05": {
-							"asset_idx": 5,
-							"org_text": "O",
-							"display_text": "O"
-						},
-						"env_asset06": {
-							"asset_idx": 6,
-							"org_text": "O",
-							"display_text": "O"
-						}
-					}
-				}
-			}
-		],
-		"setting_column": [
-			{
-				"data": "sequence_idx",
-				"type": "numeric",
-				"width": 50,
-				"editor": false
-			},
-			{
-				"data": "sequence_name",
-				"type": "text",
-				"readOnly": true,
-				"width": 120,
-				"editor": false
-			},
-			{ "data": "shot_idx", "type": "numeric", "width": 50, "editor": false },
-			{
-				"data": "shot_name",
-				"type": "text",
-				"readOnly": true,
-				"width": 120,
-				"editor": false
-			},
-			{
-				"data": "shot_thumbnail",
-				"renderer": "renderThumbnail",
-				"width": 84,
-				"editor": false
-			},
-			{
-				"data": "description",
-				"type": "text",
-				"width": 190,
-				"readOnly": true,
-				"editor": false
-			},
-			{
-				"data": "direction_note",
-				"type": "text",
-				"width": 190,
-				"readOnly": true,
-				"editor": false
-			},
-			{
-				"data": "assets.ch.ch_asset01.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.ch.ch_asset02.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.ch.ch_asset03.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.ch.ch_asset04.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.ch.ch_asset05.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.ch.ch_asset06.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.ch.ch_asset07.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.env.env_asset01.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.env.env_asset02.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.env.env_asset03.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.env.env_asset04.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.env.env_asset05.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			},
-			{
-				"data": "assets.env.env_asset06.display_text",
-				"renderer": "renderRelation",
-				"type": "text"
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "Success"
+  },
+  "data": {
+    "shots": [
+      {
+        "idx": "1",
+        "name": "s0010_c0010",
+        "description": "Opening_sequence",
+        "sequence": {
+          "idx": "1",
+          "name": "s0010",
+          "description": "Opening Sequence",
+          "sequence_order": "1"
+        },
+        "status": {
+          "idx": "1",
+          "name": "wip"
+        }
+      },
+      {
+        "idx": "2",
+        "name": "s0010_c0020",
+        "description": "river flows",
+        "sequence": {
+          "idx": "1",
+          "name": "s0010",
+          "description": "Opening Sequence",
+          "sequence_order": "1"
+        },
+        "status": {
+          "idx": "1",
+          "name": "wip"
+        }
+      }
+    ],
+    "project": {
+      "idx": "1",
+      "name": "Demo_Bigbuck_Bunny",
+      "description": "Demo_Bigbuck_Bunny",
+      "start_date": "2018-12-11",
+      "end_date": "2019-04-12"
+    },
+    "episode": {
+      "idx": "1",
+      "name": "Ep01",
+      "description": "Demo_Bigbuck_Bunny_First"
+    }
+  }
 }
 ```
+
+---
+
+## A1. 샷 계열 벌크 검증 <a id="shots-bulk-validate"></a>
+
+### `GET /api/shots/bulk/validate`
+
+### permission
+
+- `permission.read_project`
+
+### request
+
+| param           | type  |      data       | required | desc |
+| --------------- | :---: | :-------------: | :------: | ---- |
+| project_name[]  | query | array of string |    O     |      |
+| episode_name[]  | query | array of string |    O     |      |
+| sequence_name[] | query | array of string |    O     |      |
+| shot_name[]     | query | array of string |    O     |      |
+
+### response
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "Success"
+  },
+  "data": {
+    "validations": [
+      {
+        "project": {
+          "idx": "1",
+          "name": "Big Bunny"
+        },
+        "episode": {
+          "idx": "3",
+          "name": "Ep03"
+        },
+        "sequence": {
+          "idx": "1",
+          "name": "s0010"
+        },
+        "shot": {
+          "idx": "1",
+          "name": "s0010_c0010"
+        }
+      },
+      {
+        "project": {
+          "idx": "2",
+          "name": "Turbo"
+        },
+        "episode": {
+          "idx": "2",
+          "name": "Ep02"
+        },
+        "sequence": {
+          "idx": "3",
+          "name": "s0030"
+        },
+        "shot": {
+          "idx": "11",
+          "name": "s0030_c0030"
+        }
+      }
+    ]
+  }
+}
+```
+
+---
+
+## A2. 샷 정보 수정 <a id="shots-update"></a>
+
+### `POST /api/shots/{shot_idx}/update`
+
+### Webhook
+
+- event: shot
+- action: update
+
+### permission
+
+- `permission.update_shot_and_task`
+
+### request
+
+| param                | type  |  data   | required | desc   |
+| -------------------- | :---: | :-----: | :------: | ------ |
+| shot_idx             | path  | integer |    O     |        |
+| {property_name}[new] | query |   any   |    O     | 컬럼명 |
+| {property_name}[old] | query |   any   |    X     | 컬럼명 |
+
+- {property_name}을 칼럼별로 이용하여 여러 컬럼을 동시에 수정할 수 있음
+- 예) `POST /api/shots/1/update?name[new]=s0010_c0010&name[old]=s0010_&description[new]=scene&description[old]=abc`
+
+### response
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "샷 정보가 수정됐습니다."
+  },
+  "data": {
+    "shot": {
+      "idx": 14,
+      "columns": [
+        {
+          "name": "camera_clip",
+          "value": "1"
+        },
+        {
+          "name": "frame_in",
+          "value": "2"
+        }
+      ]
+    }
+  }
+}
+```
+
+- 숫자만 들어갈 수 있는 컬럼은 Shots 헤더의 Length, Handle In, Handle Out, Frame In, Frame Out 컬럼입니다.
 
 ---
 
@@ -781,9 +720,6 @@
 [샷 목록 조회]: #project-shot-list
 [샷 벌크 등록]: #project-shot-bulk-create
 [샷 벌크 목록 조회]: #project-shot-list
-[샷에 관련된 에셋 추가]: #shot-asset-add
-[샷에 관련된 에셋 벌크 추가]: #shot-asset-bulk-add
-[샷에 관련된 에셋 제거]: #shot-asset-remove
-[샷에 관련된 에셋 벌크 제거]: #shot-asset-bulk-remove
-[샷에 관련된 에셋과 태스크 목록 조회]: #shot-asset-list
-[릴레이션 오버뷰 조회]: #relation-overview-read
+[에피소드 내 샷 목록 조회]: #episode-shot-list
+[샷 계열 벌크 검증]: #shots-bulk-validate
+[샷 정보 수정]: #shots-update

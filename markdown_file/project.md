@@ -2,19 +2,29 @@
 
 ## 목차
 
-| 내용                                       | slug                                              | 서버 구현 | 웹 적용 |
-| :----------------------------------------- | :------------------------------------------------ | :-------: | :-----: |
-| 1. [프로젝트 목록 조회]                    | /api/project/list                                 |    GET    |    O    |
-| 2. [프로젝트 생성]                         | /api/project/create                               |   POST    |    O    |
-| 3. [프로젝트 정보 조회]                    | /api/project/{project_idx}/read                   |    GET    |    O    |
-| 4. [프로젝트 상세 정보 조회]               | /api/project/{project_idx}/detail/read            |    GET    |    O    |
-| 5. [프로젝트 정보 수정]                    | /api/project/{project_idx}/update                 |   POST    |    O    |
-| 6. [프로젝트 경로 정보 수정]               | /api/project/{project_idx}/path/update            |   POST    |    O    |
-| 7. [프로젝트 삭제]                         | /api/project/{project_idx}/delete                 |   POST    |    O    |
-| 8. [프로젝트 상태 코드 목록 조회]          | /api/project/status/list                          |    O\*    |    X    |
-| 9. [프로젝트에 할당된 상태 코드 목록 조회] | /api/project/{project_idx}/{in_which}/status/list |    GET    |    O    |
+| 내용                                       | slug                                              | 서버 구현 | 웹 적용 |  웹훅  | 로그 |
+| :----------------------------------------- | :------------------------------------------------ | :-------: | :-----: | :----: | :--: |
+| 1. [프로젝트 목록 조회]                    | /api/project/list                                 |    GET    |    O    |   -    |  -   |
+| 2. [프로젝트 생성]                         | /api/project/create                               |   POST    |    O    | hooked |  O   |
+| 3. [프로젝트 정보 조회]                    | /api/project/{project_idx}/read                   |    GET    |    O    |   -    |  -   |
+| 4. [프로젝트 상세 정보 조회]               | /api/project/{project_idx}/detail/read            |    GET    |    O    |   -    |  -   |
+| 5. [프로젝트 정보 수정]                    | /api/project/{project_idx}/update                 |   POST    |    O    |   -    |  O   |
+| 6. [프로젝트 경로 정보 수정]               | /api/project/{project_idx}/path/update            |   POST    |    O    |   -    |  -   |
+| 7. [프로젝트 삭제]                         | /api/project/{project_idx}/delete                 |   POST    |    O    |   -    |  O   |
+| 8. [프로젝트 상태 코드 목록 조회]          | /api/project/status/list                          |    O\*    |    X    |   -    |  -   |
+| 9. [프로젝트에 할당된 상태 코드 목록 조회] | /api/project/{project_idx}/{in_which}/status/list |    GET    |    O    |   -    |  -   |
+| 10. [파일 단순 등록]                       | /api/project/{project_idx}/file/create            |   POST    |    O    |   -    |  -   |
+| 11. [파일 단순 삭제]                       | /api/project/{project_idx}/file/delete            |   POST    |    X    |   -    |  -   |
+| 12. [프로젝트 세팅 리스트]                 | /api/project/{project_idx}/setting/list           |    GET    |    X    |   -    |  -   |
+| 13. [프로젝트 세팅 업데이트]               | /api/project/{project_idx}/setting/update         |   POST    |    X    |   -    |  -   |
 
 - O\* - api 없이 콘트롤러에 직접 구현
+
+## 목차 V2
+
+| 내용                     | slug                  | 서버 구현 | 웹 적용 | 웹훅 | 로그 | 크론탭 |
+| :----------------------- | :-------------------- | :-------: | :-----: | :--: | :--: | ------ |
+| A1. [프로젝트 구조 조회] | /api/hierarchies/list |    GET    |    X    |  -   |  -   | -      |
 
 ---
 
@@ -31,7 +41,7 @@
 
 ### permission
 
-- `permission.read_project`
+- all
 
 ### request
 
@@ -45,34 +55,34 @@
 
 ```json
 {
-	"projects": [
-		{
-			"project_idx": 1,
-			"name": "Demo_BigBuck",
-			"url_thumbnail": "http://128.0.1.234/assets/images/thumbnail/project/big/default.light.svg",
-			"start_date": "2018-01-02",
-			"end_date": "2018-08-08",
-			"project_status": "1",
-			"project_status_name": "Waiting",
-			"is_finished": 0
-		},
-		{
-			"project_idx": 2,
-			"name": "Super Duper Power",
-			"url_thumbnail": "http://128.0.1.234/assets/images/thumbnail/project/big/default.light.svg",
-			"start_date": "2018-01-02",
-			"end_date": "2018-08-08",
-			"project_status": "1",
-			"project_status_name": "Waiting",
-			"is_finished": 0
-		}
-	],
-	"paging": {
-		"cur_page": 1,
-		"start_page": 1,
-		"last_page": 1,
-		"total_page": 1
-	}
+  "projects": [
+    {
+      "idx": 1,
+      "name": "Demo_BigBuck",
+      "url_thumbnail": "http://128.0.1.234/assets/images/thumbnail/project/big/default.light.svg",
+      "start_date": "2018-01-02",
+      "end_date": "2018-08-08",
+      "status": "1",
+      "status_name": "Waiting",
+      "is_finished": 0
+    },
+    {
+      "idx": 2,
+      "name": "Super Duper Power",
+      "url_thumbnail": "http://128.0.1.234/assets/images/thumbnail/project/big/default.light.svg",
+      "start_date": "2018-01-02",
+      "end_date": "2018-08-08",
+      "status": "1",
+      "status_name": "Waiting",
+      "is_finished": 0
+    }
+  ],
+  "paging": {
+    "cur_page": 1,
+    "start_page": 1,
+    "last_page": 1,
+    "total_page": 1
+  }
 }
 ```
 
@@ -82,29 +92,40 @@
 
 ### `POST /api/project/create`
 
+### Webhook
+
+- event: project
+- action: create
+
 ### request
 
-| param          | type  |  data   | required | desc                                     |
-| -------------- | :---: | :-----: | :------: | ---------------------------------------- |
-| project_name   | query | string  |    O     |                                          |
-| description    | query | string  |    X     |                                          |
-| start_date     | query |  date   |    X     | YYYY-MM-DD                               |
-| end_date       | query |  date   |    X     | YYYY-MM-DD                               |
-| project_status | query | integer |    O     | 1: 준비 중, 2: 작업 중, 3: 완료, 4: 홀드 |
-| attached       | query |  file   |    X     | 썸네일 파일 (1개)                        |
+| param            | type  |  data   | required | desc                                     |
+| ---------------- | :---: | :-----: | :------: | ---------------------------------------- |
+| project_name     | query | string  |    O     |                                          |
+| description      | query | string  |    X     |                                          |
+| start_date       | query |  date   |    X     | YYYY-MM-DD                               |
+| end_date         | query |  date   |    X     | YYYY-MM-DD                               |
+| project_status   | query | integer |    O     | 1: 준비 중, 2: 작업 중, 3: 완료, 4: 홀드 |
+| attached         | query |  file   |    X     | 썸네일 파일 (1개)                        |
+| with_project_idx | query | integer |    X     | 세팅을 가져올 프로젝트의 idx             |
+| using_allocation | query | integer |    X     | 1 / 0 (얼로케이션을 가져올지 말지)       |
+| using_custom     | query | integer |    X     | 1 / 0 (커스텀 컬럼을 가져올지 말지)      |
+| using_setting    | query | integer |    X     | 1 / 0 (세팅을 가져올지 말지)             |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "프로젝트가 생성됐습니다."
-	},
-	"data": {
-		"project_idx": 1,
-		"slug": "tv-series-new-1"
-	}
+  "error": {
+    "code": 200,
+    "message": "프로젝트가 생성됐습니다."
+  },
+  "data": {
+    "project": {
+      "idx": 1,
+      "slug": "tv-series-new-1"
+    }
+  }
 }
 ```
 
@@ -128,22 +149,22 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"project": {
-			"project_idx": 1,
-			"name": "Project Name",
-			"url_thumbnail": "http://abc.jpg",
-			"start_date": "2018-01-02",
-			"end_date": "2018-08-08",
-			"project_status": "1",
-			"project_status_name": "Waiting",
-			"description": "설명입니다."
-		}
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "project": {
+      "project_idx": 1,
+      "name": "Project Name",
+      "url_thumbnail": "http://abc.jpg",
+      "start_date": "2018-01-02",
+      "end_date": "2018-08-08",
+      "project_status": "1",
+      "project_status_name": "Waiting",
+      "description": "설명입니다."
+    }
+  }
 }
 ```
 
@@ -167,57 +188,57 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "성공"
-	},
-	"data": {
-		"project": {
-			"project_idx": "1",
-			"name": "Demo_BigBuck",
-			"slug": "prja",
-			"project_thumbnail": "http://localhost:81/2019/03/19/daf3a19580c2d02e.jpg",
-			"description": "Demo_BigBuck",
-			"start_date": "2019-03-04",
-			"end_date": "2019-03-29",
-			"project_status": "2",
-			"project_status_name": "Working"
-		},
-		"allocation": [
-			{
-				"type": "tasktype_asset",
-				"allocated": "2",
-				"total": "3"
-			},
-			{
-				"type": "tasktype_shot",
-				"allocated": "8",
-				"total": "8"
-			},
-			{
-				"type": "status",
-				"allocated": "6",
-				"total": "8"
-			},
-			{
-				"type": "user",
-				"allocated": "6",
-				"total": "7"
-			}
-		],
-		"path": {
-			"asset": {
-				"version": "[Fileserver]/[Project]/asset/[Category]/[Asset]/version/[User]/[Today]/[Version]",
-				"publish": "[Fileserver]/[Project]/asset/[Category]/[Asset]/pub/[Publish]",
-				"last_publish": "[Fileserver]/[Project]/asset/[Category]/[Asset]/pub/last"
-			},
-			"shot": {
-				"version": "[Fileserver]/[Project]/shot/[Episode]/[Sequence]/[Shot]/version/[User]/[Today]/[Version]",
-				"publish": "[Fileserver]/[Project]/shot/[Episode]/[Sequence]/[Shot]/pub/[Publish]",
-				"last_publish": "[Fileserver]/[Project]/shot/[Episode]/[Sequence]/[Shot]/pub/last"
-			}
-		}
-	}
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "project": {
+      "idx": "1",
+      "name": "Demo_BigBuck",
+      "slug": "prja",
+      "thumbnail": "http://localhost:81/2019/03/19/daf3a19580c2d02e.jpg",
+      "description": "Demo_BigBuck",
+      "start_date": "2019-03-04",
+      "end_date": "2019-03-29",
+      "status": "2",
+      "status_name": "Working"
+    },
+    "allocation": [
+      {
+        "type": "tasktype_asset",
+        "allocated": "2",
+        "total": "3"
+      },
+      {
+        "type": "tasktype_shot",
+        "allocated": "8",
+        "total": "8"
+      },
+      {
+        "type": "status",
+        "allocated": "6",
+        "total": "8"
+      },
+      {
+        "type": "user",
+        "allocated": "6",
+        "total": "7"
+      }
+    ],
+    "path": {
+      "asset": {
+        "version": "[Fileserver]/[Project]/asset/[Category]/[Asset]/version/[User]/[Today]/[Version]",
+        "publish": "[Fileserver]/[Project]/asset/[Category]/[Asset]/pub/[Publish]",
+        "last_publish": "[Fileserver]/[Project]/asset/[Category]/[Asset]/pub/last"
+      },
+      "shot": {
+        "version": "[Fileserver]/[Project]/shot/[Episode]/[Sequence]/[Shot]/version/[User]/[Today]/[Version]",
+        "publish": "[Fileserver]/[Project]/shot/[Episode]/[Sequence]/[Shot]/pub/[Publish]",
+        "last_publish": "[Fileserver]/[Project]/shot/[Episode]/[Sequence]/[Shot]/pub/last"
+      }
+    }
+  }
 }
 ```
 
@@ -233,28 +254,42 @@
 
 ### request
 
-| param          | type  |  data   | required | desc                                     |
-| -------------- | :---: | :-----: | :------: | ---------------------------------------- |
-| project_idx    | path  | integer |    O     |                                          |
-| project_name   | query | string  |    O     |                                          |
-| description    | query | string  |    O     |                                          |
-| start_date     | query | string  |    O     |                                          |
-| end_date       | query | string  |    O     |                                          |
-| project_status | query | integer |    O     | 1: 준비 중, 2: 작업 중, 3: 완료, 4: 홀드 |
-| attached       | query |  file   |    X     | 썸네일 파일 (1개)                        |
+| param           | type  |  data   | required | desc                                     |
+| --------------- | :---: | :-----: | :------: | ---------------------------------------- |
+| project_idx     | path  | integer |    O     |                                          |
+| project_name    | query | string  |    O     |                                          |
+| description     | query | string  |    O     |                                          |
+| start_date      | query |  date   |    O     |                                          |
+| end_date        | query | string  |    O     |                                          |
+| project_status  | query | integer |    O     | 1: 준비 중, 2: 작업 중, 3: 완료, 4: 홀드 |
+| attached        | query |  file   |    X     | 썸네일 파일 (1개)                        |
+| shot_thumbnail  | query | string  |    X     | shot / last_version (없으면 shot)        |
+| asset_thumbnail | query | string  |    X     | asset / last_version (없으면 asset)      |
 
 ### response
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "프로젝트 정보가 수정됐습니다."
-	},
-	"data": {
-		"project_idx": 1,
-		"project_thumbnail": "abc.jpg"
-	}
+  "error": {
+    "code": 200,
+    "message": "프로젝트 정보가 수정됐습니다."
+  },
+  "data": {
+    "project": {
+      "idx": "2",
+      "name": "cccc",
+      "description": "11",
+      "is_on": "1",
+      "project_status": {
+        "idx": "1",
+        "name": "Waiting",
+        "color": "#FBAC49"
+      },
+      "start_date": null,
+      "end_date": null,
+      "thumbnail": "http://localhost:81/2022/08/18/cbb2b99c1677bc7f.jpg"
+    }
+  }
 }
 ```
 
@@ -297,13 +332,13 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "프로젝트 정보가 수정됐습니다."
-	},
-	"data": {
-		"project_idx": 1
-	}
+  "error": {
+    "code": 200,
+    "message": "프로젝트 정보가 수정됐습니다."
+  },
+  "data": {
+    "project_idx": 1
+  }
 }
 ```
 
@@ -327,11 +362,11 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "프로젝트가 삭제됐습니다."
-	},
-	"data": null
+  "error": {
+    "code": 200,
+    "message": "프로젝트가 삭제됐습니다."
+  },
+  "data": null
 }
 ```
 
@@ -368,32 +403,32 @@
 
 ```json
 {
-  "error": {
+   "error": {
     "code": 200,
     "message": "성공"
-  },
-  "data": "project_status": [
-    {
-      "idx" : 1,
-      "name": "Waiting",
-      "color": "#FBAC49"
     },
-    {
-      "idx" : 2,
-      "name": "Working",
-      "color": "#4990fb"
-    },
-    {
-      "idx" : 3,
-      "name": "Finished",
-      "color": "#1f8c2f"
-    },
-    {
-      "idx" : 4,
-      "name": "Holding",
-      "color": "#c93f3f"
-    },
-  ]
+    "data": "project_status": [
+		{
+			"idx" : 1,
+			"name": "Waiting",
+			"color": "#FBAC49"
+		},
+		{
+			"idx" : 2,
+			"name": "Working",
+			"color": "#4990fb"
+		},
+		{
+			"idx" : 3,
+			"name": "Finished",
+			"color": "#1f8c2f"
+		},
+		{
+			"idx" : 4,
+			"name": "Holding",
+			"color": "#c93f3f"
+		},
+    ]
 }
 ```
 
@@ -422,26 +457,206 @@
 
 ```json
 {
-	"error": {
-		"code": 200,
-		"message": "상태 코드 목록이 조회 되었습니다."
-	},
-	"data": {
-		"episode": [
-			{
-				"idx": 1,
-				"name": "status 1"
-			},
-			{
-				"idx": 2,
-				"name": "status 2"
-			},
-			{
-				"idx": 3,
-				"name": "status 3"
-			}
-		]
-	}
+  "error": {
+    "code": 200,
+    "message": "상태 코드 목록이 조회 되었습니다."
+  },
+  "data": {
+    "episode": [
+      {
+        "idx": 1,
+        "name": "status 1"
+      },
+      {
+        "idx": 2,
+        "name": "status 2"
+      },
+      {
+        "idx": 3,
+        "name": "status 3"
+      }
+    ]
+  }
+}
+```
+
+---
+
+## 10. 파일 단순 등록 <a id="file-create"></a>
+
+### `POST /api/project/{project_idx}/file/create`
+
+### permission
+
+- `permission.read_shot_task_overview`
+
+### request
+
+| param       | type  |  data   | required | desc |
+| ----------- | :---: | :-----: | :------: | ---- |
+| project_idx | path  | integer |    O     |      |
+| attached    | query |  file   |    O     |      |
+
+### response
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "파일이 업로드됐습니다."
+  },
+  "data": {
+    "url": "/assets/... .png"
+  }
+}
+```
+
+---
+
+## 11. 파일 단순 삭제 <a id="file-delete"></a>
+
+### `POST /api/project/{project_idx}/file/delete`
+
+### permission
+
+- `permission.read_shot_task_overview`
+
+### request
+
+| param       | type  |  data   | required | desc |
+| ----------- | :---: | :-----: | :------: | ---- |
+| project_idx | path  | integer |    O     |      |
+| url         | query | string  |    O     |      |
+
+### response
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "파일이 삭제됐습니다."
+  }
+}
+```
+
+---
+
+## 12. 프로젝트 세팅 리스트 <a id="setting-list"></a>
+
+### `GET /api/project/{project_idx}/setting/list`
+
+### permission
+
+- `permission.read_project`
+
+### request
+
+| param       | type |  data   | required | desc |
+| ----------- | :--: | :-----: | :------: | ---- |
+| project_idx | path | integer |    O     |      |
+
+### response
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": {
+    "settings": [
+      {
+        "idx": "17",
+        "pos": "1",
+        "col_name": "shot_thumbnail",
+        "col_show": "Shot's thumbnail",
+        "col_val": "0",
+        "col_labels": ["Manual upload", "Lastest version thumbnail"]
+      },
+      {
+        "idx": "18",
+        "pos": "1",
+        "col_name": "asset_thumbnail",
+        "col_show": "Asset's thumbnail",
+        "col_val": "0",
+        "col_labels": ["Manual upload", "Lastest version thumbnail"]
+      },
+      {
+        "idx": "19",
+        "pos": "1",
+        "col_name": "shot_version_status",
+        "col_show": "Lastest Version status of Shot",
+        "col_val": "0",
+        "col_labels": ["Don't follow", "Follow to shot task status"]
+      },
+      {
+        "idx": "20",
+        "pos": "1",
+        "col_name": "asset_version_status",
+        "col_show": "Lastest Version status of Asset",
+        "col_val": "0",
+        "col_labels": ["Don't follow", "Follow to asset task status"]
+      }
+    ]
+  }
+}
+```
+
+---
+
+## 13. 프로젝트 세팅 업데이트 <a id="setting-update"></a>
+
+### `POST /api/project/{project_idx}/setting/update`
+
+### permission
+
+- `permission.update_project`
+
+### request
+
+| param       | type  |  data   | required | desc |
+| ----------- | :---: | :-----: | :------: | ---- |
+| project_idx | path  | integer |    O     |      |
+| idx         | query | integer |    O     |      |
+| col_val     | query | integer |    O     |      |
+
+### response
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": null
+}
+```
+
+---
+
+## A1. 프로젝트 구조 조회 | /api/hierarchies/list <a id="hierarchies-list"></a>
+
+### `GET /api/hierarchies/list`
+
+### permission
+
+- `permission.update_project`
+
+### request
+
+| param       | type  |  data   | required | desc |
+| ----------- | :---: | :-----: | :------: | ---- |
+| project_idx | query | integer |    O     |      |
+
+### response
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": null
 }
 ```
 
@@ -458,3 +673,8 @@
 [프로젝트 삭제]: #project-delete
 [프로젝트 상태 코드 목록 조회]: #project-status-list
 [프로젝트에 할당된 상태 코드 목록 조회]: #project-which-status-list
+[파일 단순 등록]: #file-create
+[파일 단순 삭제]: #file-delete
+[프로젝트 세팅 리스트]: #setting-list
+[프로젝트 세팅 업데이트]: #setting-update
+[프로젝트 구조 조회]: #hierarchies-list

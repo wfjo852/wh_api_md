@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 내용                    | slug                                                | 서버 구현 | 웹 적용 |
-| :---------------------- | :-------------------------------------------------- | :-------: | :-----: |
-| 1. [퍼블리시 설정 생성] | /api/{which}/task/{task_idx}/publish/setting/create |   POST    |  일부   |
-| 2. [퍼블리시 설정 조회] | /api/publish/setting/read                           |   POST    |   O\*   |
-| 3. [퍼블리시 생성]      | /api/{which}/task/publish/create                    |   POST    |   O\*   |
+| 내용                    | slug                                                | 서버 구현 | 웹 적용 |  웹훅  | 로그 |
+| :---------------------- | :-------------------------------------------------- | :-------: | :-----: | :----: | :--: |
+| 1. [퍼블리시 설정 생성] | /api/{which}/task/{task_idx}/publish/setting/create |   POST    |  일부   |   -    |  -   |
+| 2. [퍼블리시 설정 조회] | /api/publish/setting/read                           |   POST    |   O\*   |   -    |  -   |
+| 3. [퍼블리시 생성]      | /api/{which}/task/publish/create                    |   POST    |   O\*   | hooked |  -   |
 
 - O\* - 버전 툴에서 사용
 
@@ -95,31 +95,47 @@
 		"task_status": [
 			{
 				"status_idx": "1",
-				"name": "Waiting"
+				"name": "Waiting",
+				"color": "#dbd8db",
+				"progress": "5",
+				"description": null
 			},
 			{
 				"status_idx": "2",
 				"name": "WIP (now)",
-        "selected": true
+				"color": "#03a9f4",
+				"progress": "30",
+				"description": null,
+				"selected": true
 			},
 			{
 				"status_idx": "3",
-				"name": "Done"
+				"name": "Done",
+				"color": "#f44336",
+				"progress": "10",
+				"description": null
 			}
 		],
 		"version_status": [
 			{
 				"status_idx": "1",
-				"name": "Waiting"
+				"name": "Waiting",
+				"progress": "5",
+				"description": null
 			},
 			{
 				"status_idx": "2",
-				"name": "WIP (now)",
-        "selected": true
+				"name": "WIP",
+				"color": "#03a9f4",
+				"progress": "30",
+				"description": null
 			},
 			{
 				"status_idx": "3",
-				"name": "Done"
+				"name": "Done",
+				"color": "#f44336",
+				"progress": "10",
+				"description": null
 			}
 		],
 		"version_history": [
@@ -141,6 +157,11 @@
 ## 3. 퍼블리시 생성 <a id="publish-create"></a>
 
 ### `POST /api/{which}/task/publish/create`
+
+### Webhook
+
+- event: publish
+- action: create
 
 ### permission
 
@@ -179,7 +200,9 @@
 		"message": "버전이 생성됐습니다."
 	},
 	"data": {
-		"version_idx": "5"
+		"publish": {
+			"idx": "5"
+		}
 	}
 }
 ```

@@ -2,17 +2,17 @@
 
 ## 목차
 
-| 내용                  | slug                                                                    | 서버 구현 | 웹 적용 |
-| :-------------------- | :---------------------------------------------------------------------- | :-------: | :-----: |
-| 1. [게시글 목록 조회] | /api/forum/article/list[/page/{page}/search/{search}/keyword/{keyword}] |    GET    |   O\*   |
-| 2. [게시글 등록]      | /api/forum/artice/create                                                |   POST    |    O    |
-| 3. [게시글 보기]      | /api/forum/article/{article_idx}/read[/{article_only}]                  |    GET    |   O\*   |
-| 4. [게시글 수정]      | /api/forum/artice/{article_idx}/update                                  |   POST    |    O    |
-| 5. [게시글 삭제]      | /api/forum/article/{article_idx}/delete                                 |   POST    |    O    |
-| 6. [공지글 등록]      | /api/forum/article/{article_idx}/pin                                    |   POST    |    O    |
-| 7. [공지글 해지]      | /api/forum/article/{article_idx}/unpin                                  |   POST    |    O    |
-| 8. [댓글 등록]        | /api/forum/comment/create                                               |   POST    |    O    |
-| 9. [댓글 삭제]        | /api/forum/comment/{comment_idx}/delete                                 |   POST    |    O    |
+| 내용                  | slug                                                                    | 서버 구현 | 웹 적용 | 웹훅 | 로그 |
+| :-------------------- | :---------------------------------------------------------------------- | :-------: | :-----: | :--: | :--: |
+| 1. [게시글 목록 조회] | /api/forum/article/list[/page/{page}/search/{search}/keyword/{keyword}] |    GET    |   O\*   |  -   |  -   |
+| 2. [게시글 등록]      | /api/forum/article/create                                               |   POST    |    O    |  -   |  -   |
+| 3. [게시글 보기]      | /api/forum/article/{article_idx}/read[/{article_range}]                 |    GET    |   O\*   |  -   |  -   |
+| 4. [게시글 수정]      | /api/forum/article/{article_idx}/update                                 |   POST    |    O    |  -   |  -   |
+| 5. [게시글 삭제]      | /api/forum/article/{article_idx}/delete                                 |   POST    |    O    |  -   |  -   |
+| 6. [공지글 등록]      | /api/forum/article/{article_idx}/pin                                    |   POST    |    O    |  -   |  -   |
+| 7. [공지글 해지]      | /api/forum/article/{article_idx}/unpin                                  |   POST    |    O    |  -   |  -   |
+| 8. [댓글 등록]        | /api/forum/comment/create                                               |   POST    |    O    |  -   |  -   |
+| 9. [댓글 삭제]        | /api/forum/comment/{comment_idx}/delete                                 |   POST    |    O    |  -   |  -   |
 
 - O\* - 뷰에 직접 구현
 
@@ -47,38 +47,65 @@
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "message": "성공"
-  },
-  "data": {
-    "articles": [
-      {
-        "article_idx": "23",
-        "subject": "This is first subject",
-        "user_id": "hghg",
-        "user_name": "Hong Gill",
-        "date": "2018-11-12 12:33:55",
-        "views": 5,
-        "is_notice": 1
-      },
-      {
-        "article_idx": "21",
-        "subject": "This is second subject",
-        "user_id": "ti",
-        "user_name": "Tim",
-        "date": "2018-11-11 07:33:55",
-        "views": 1,
-        "is_notice": 0
-      }
-    ],
-    "paging": {
-      "cur_page": 1,
-      "first_page": 1,
-      "last_page": 1,
-      "total_page": 1
-    }
-  }
+	"error": {
+		"code": 200,
+		"message": "Success"
+	},
+	"data": {
+		"articles": [
+			{
+				"idx": "71",
+				"subject": "Test Article",
+				"user": {
+					"idx": "1",
+					"name": "C2Monster",
+					"id": "c2m",
+					"email": "contact@c2monster.com",
+					"thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png"
+				},
+				"is_notice": "0",
+				"created_time": "2020-07-31 16:00:06",
+				"views": "1"
+			},
+			{
+				"idx": "70",
+				"subject": "Test Article2",
+				"user": {
+					"idx": "1",
+					"name": "C2Monster",
+					"id": "c2m",
+					"email": "contact@c2monster.com",
+					"thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png"
+				},
+				"is_notice": "0",
+				"created_time": "2020-07-31 15:56:02",
+				"views": "0"
+			},
+			{
+				"idx": "5",
+				"subject": "Example Article",
+				"user": {
+					"idx": "1",
+					"name": "C2Monster",
+					"id": "c2m",
+					"email": "contact@c2monster.com",
+					"thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png"
+				},
+				"is_notice": "0",
+				"created_time": "2020-07-29 16:03:21",
+				"views": "30"
+			}
+		],
+		"paging": {
+			"cur_page": 1,
+			"first_page": 1,
+			"last_page": 1,
+			"total_page": 1,
+			"block_per_page": 5
+		},
+		"search": "subject",
+		"keyword": "article"
+	}
 }
 ```
 
@@ -105,13 +132,26 @@
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "message": "글이 등록됐습니다."
-  },
-  "data": {
-    "article_idx": "5" // 등록된 글의 인덱스
-  }
+	"error": {
+		"code": 200,
+		"message": "글이 등록됐습니다."
+	},
+	"data": {
+		"article": {
+			"idx": "55",
+			"subject": "Example Article",
+			"user": {
+				"idx": "1",
+				"name": "C2Monster",
+				"id": "c2m",
+				"email": "contact@c2monster.com",
+				"thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png"
+			},
+			"is_notice": "0",
+			"created_time": "2020-07-30 17:48:44",
+			"views": "0"
+		}
+	}
 }
 ```
 
@@ -127,56 +167,74 @@
 
 ### request
 
-| param        | type |  data   | required | desc             |
-| ------------ | :--: | :-----: | :------: | ---------------- |
-| article_idx  | path | integer |    O     |                  |
-| article_only | path | string  |    X     | 값: article_only |
+| param         | type |  data   | required | desc                        |
+| ------------- | :--: | :-----: | :------: | --------------------------- |
+| article_idx   | path | integer |    O     |                             |
+| article_range | path | string  |    X     | 값: article_only or minimum |
 
 ### response
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "message": "성공"
-  },
-  "data": {
-    "article": {
-      "article_idx": "4",
-      "subject": "subject abc",
-      "contents": "contents def",
-      "user_id": "c2m",
-      "user_name": "C2Monster",
-      "user_thumbnail": "http:\/\/localhost:81\/2019\/04\/08\/c1f855a779d0543e.png",
-      "date": "2019-11-13 11:18:54",
-      "is_notice": "0",
-      "views": "4"
-    },
-    "attachment": [
-      {
-        "idx": "6",
-        "forum_idx": "4",
-        "is_file": "1",
-        "name": "\/2019\/11\/13\/5f0ee44ec9d0bfca.jpg",
-        "name_original": "DQYjqI9UEAEILIT.jpg",
-        "memo": null,
-        "is_on": "1",
-        "is_image": true,
-        "url": "http:\/\/localhost\/article\/attachment\/6\/download"
-      }
-    ],
-    "comments": [
-      {
-        "comment_idx": "1",
-        "user_id": "c2m",
-        "user_name": "C2Monster",
-        "user_thumbnail": "http:\/\/localhost:81\/2019\/04\/08\/c1f855a779d0543e.png",
-        "date": "2019-11-13 11:19:23",
-        "comment": "this is comment",
-        "can_delete": 1
-      }
-    ]
-  }
+	"error": {
+		"code": 200,
+		"message": "Success"
+	},
+	"data": {
+		"article": {
+			"idx": "5",
+			"subject": "Example Article",
+			"contents": "Example Article Contents",
+			"user": {
+				"idx": "1",
+				"name": "C2Monster",
+				"id": "c2m",
+				"email": "contact@c2monster.com",
+				"thumbnail": "http://localhost:81/2019/04/08/c1f855a779d0543e.png"
+			},
+			"is_notice": "0",
+			"created_time": "2020-07-29 16:03:21",
+			"views": "2",
+			"me_created": true,
+			"attachments": [
+				{
+					"idx": "5",
+					"name": "test-img.jpg",
+					"url": "http://localhost:81/2020/07/29/3f74997229c00db9.jpg",
+					"thumbnail": "",
+					"mime_type": ["image", "jpeg"]
+				}
+			]
+		},
+		"comments": [
+			{
+				"idx": "7",
+				"user": {
+					"idx": "1",
+					"name": "C2Monster",
+					"id": "c2m",
+					"email": "contact@c2monster.com",
+					"thumbnail": "http://localhost:81/2019/04/08/c1f855a779d0543e.png"
+				},
+				"created_time": "2020-07-29 16:03:32",
+				"comment": "This is Comment",
+				"can_delete": 1
+			},
+			{
+				"idx": "8",
+				"user": {
+					"idx": "1",
+					"name": "C2Monster",
+					"id": "c2m",
+					"email": "contact@c2monster.com",
+					"thumbnail": "http://localhost:81/2019/04/08/c1f855a779d0543e.png"
+				},
+				"created_time": "2020-07-29 16:03:39",
+				"comment": "Example Comment",
+				"can_delete": 1
+			}
+		]
+	}
 }
 ```
 
@@ -204,10 +262,26 @@
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "message": "글이 수정됐습니다."
-  }
+	"error": {
+		"code": 200,
+		"message": "글이 수정됐습니다."
+	},
+	"data": {
+		"article": {
+			"idx": "55",
+			"subject": "Example Article",
+			"user": {
+				"idx": "1",
+				"name": "C2Monster",
+				"id": "c2m",
+				"email": "contact@c2monster.com",
+				"thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png"
+			},
+			"is_notice": "0",
+			"created_time": "2020-07-30 17:48:44",
+			"views": "1"
+		}
+	}
 }
 ```
 
@@ -232,11 +306,11 @@
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "message": "게시글이 삭제됐습니다."
-  },
-  "data": null
+	"error": {
+		"code": 200,
+		"message": "게시글이 삭제됐습니다."
+	},
+	"data": null
 }
 ```
 
@@ -260,13 +334,11 @@
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "mmessage": "공지글로 등록했습니다."
-  },
-  "data": {
-    "article_idx": 1
-  }
+	"error": {
+		"code": 200,
+		"message": "공지글로 등록되었습니다."
+	},
+	"data": null
 }
 ```
 
@@ -290,13 +362,11 @@
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "message": "공지글에서 해지됐습니다."
-  },
-  "data": {
-    "article_idx": 1
-  }
+	"error": {
+		"code": 200,
+		"message": "공지글에서 해지됐습니다."
+	},
+	"data": null
 }
 ```
 
@@ -321,14 +391,38 @@
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "message": "댓글이 등록되었습니다."
-  },
-  "data": {
-    "article_idx": 1,
-    "comment_idx": 6
-  }
+	"error": {
+		"code": 200,
+		"message": "The Comment is added."
+	},
+	"data": {
+		"comment": {
+			"idx": 33,
+			"comment": "Example Comment",
+			"created_time": "2020-07-31 17:30:33",
+			"user": {
+				"idx": "1",
+				"name": "C2Monster",
+				"id": "c2m",
+				"email": "contact@c2monster.com",
+				"thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png"
+			},
+			"article": {
+				"idx": "71",
+				"subject": "Example Article",
+				"user": {
+					"idx": "1",
+					"name": "C2Monster",
+					"id": "c2m",
+					"email": "contact@c2monster.com",
+					"thumbnail": "http://127.0.0.1:81/2019/04/08/c1f855a779d0543e.png"
+				},
+				"is_notice": "0",
+				"created_time": "2020-07-31 16:00:06",
+				"views": "32"
+			}
+		}
+	}
 }
 ```
 
@@ -336,7 +430,7 @@
 
 ## 9. 댓글 삭제 <a id="forum-comment-delete"></a>
 
-### `POST /api/forum/comment/{article_idx}/delete`
+### `POST /api/forum/comment/{comment_idx}/delete`
 
 ### prermission
 
@@ -353,11 +447,11 @@
 
 ```json
 {
-  "error": {
-    "code": 200,
-    "message": "댓글이 삭제됐습니다."
-  },
-  "data": null
+	"error": {
+		"code": 200,
+		"message": "The Comment is removed."
+	},
+	"data": null
 }
 ```
 

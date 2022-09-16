@@ -2,11 +2,13 @@
 
 ## 목차
 
-| 내용                | slug                                                                         | 서버 구현 | 웹 적용 |
-| :------------------ | :--------------------------------------------------------------------------- | :-------: | :-----: |
-| 1. [의견 조회]      | /api/project/{project_idx}/version/{version_idx}/opinion/list                |    GET    |    O    |
-| 2. [의견 계속 조회] | /api/project/{project_idx}/version/{version_idx}/opinion/{oppinion_idx}/list |    GET    |    O    |
-| 3. [의견 추가]      | /api/project/{project_idx}/version/{version_idx}/opinion/create              |   POST    |    O    |
+| 내용                | slug                                                                          | 서버 구현 | 웹 적용 |  웹훅  | 로그  |
+| :------------------ | :---------------------------------------------------------------------------- | :-------: | :-----: | :----: | :---: |
+| 1. [의견 조회]      | /api/project/{project_idx}/version/{version_idx}/opinion/list                 |    GET    |    O    |   -    |   -   |
+| 2. [의견 계속 조회] | /api/project/{project_idx}/version/{version_idx}/opinion/{opinion_idx}/list   |    GET    |    O    |   -    |   -   |
+| 3. [의견 추가]      | /api/project/{project_idx}/version/{version_idx}/opinion/create               |   POST    |    O    | hooked |   O   |
+| 4. [의견 수정]      | /api/project/{project_idx}/version/{version_idx}/opinion/{opinion_idx}/update |   POST    |    O    |   -    |   O   |
+| 5. [의견 삭제]      | /api/project/{project_idx}/version/{version_idx}/opinion/{opinion_idx}/delete |   POST    |    O    |   -    |   O   |
 
 ---
 
@@ -27,10 +29,11 @@
 
 ### request
 
-| param       | type |  data   | required | desc |
-| ----------- | :--: | :-----: | :------: | ---- |
-| project_idx | path | integer |    O     |      |
-| task_idx    | path | integer |    O     |      |
+| param       | type  |  data   | required | desc                        |
+| ----------- | :---: | :-----: | :------: | --------------------------- |
+| project_idx | path  | integer |    O     |                             |
+| task_idx    | path  | integer |    O     |                             |
+| translation | query | string  |    X     | 'yes' / 'no' - default 'no' |
 
 ### response
 
@@ -49,7 +52,8 @@
 				"user_idx": "1",
 				"user_id": "c2m",
 				"user_name": "cccc",
-				"user_thumbnail": ""
+				"user_thumbnail": "",
+				"is_mine": false
 			},
 			{
 				"opinion_idx": "2",
@@ -58,7 +62,8 @@
 				"user_idx": "1",
 				"user_id": "c2m",
 				"user_name": "cccc",
-				"user_thumbnail": ""
+				"user_thumbnail": "",
+				"is_mine": true
 			},
 			{
 				"opinion_idx": "3",
@@ -79,7 +84,8 @@
 						"name": "asset-overview.png",
 						"is_annotation": "0"
 					}
-				]
+				],
+				"is_mine": true
 			},
 			{
 				"opinion_idx": "4",
@@ -88,7 +94,8 @@
 				"user_idx": "1",
 				"user_id": "c2m",
 				"user_name": "cccc",
-				"user_thumbnail": ""
+				"user_thumbnail": "",
+				"is_mine": true
 			}
 		]
 	}
@@ -107,10 +114,11 @@
 
 ### request
 
-| param       | type |  data   | required | desc |
-| ----------- | :--: | :-----: | :------: | ---- |
-| project_idx | path | integer |    O     |      |
-| task_idx    | path | integer |    O     |      |
+| param       | type  |  data   | required | desc                        |
+| ----------- | :---: | :-----: | :------: | --------------------------- |
+| project_idx | path  | integer |    O     |                             |
+| task_idx    | path  | integer |    O     |                             |
+| translation | query | string  |    X     | 'yes' / 'no' - default 'no' |
 
 ### response
 
@@ -129,7 +137,8 @@
 				"user_idx": "1",
 				"user_id": "c2m",
 				"user_name": "cccc",
-				"user_thumbnail": ""
+				"user_thumbnail": "",
+				"is_mine": true
 			},
 			{
 				"opinion_idx": "2",
@@ -138,7 +147,8 @@
 				"user_idx": "1",
 				"user_id": "c2m",
 				"user_name": "cccc",
-				"user_thumbnail": ""
+				"user_thumbnail": "",
+				"is_mine": true
 			},
 			{
 				"opinion_idx": "3",
@@ -159,7 +169,8 @@
 						"name": "asset-overview.png",
 						"is_annotation": "0"
 					}
-				]
+				],
+				"is_mine": true
 			},
 			{
 				"opinion_idx": "4",
@@ -168,7 +179,8 @@
 				"user_idx": "1",
 				"user_id": "c2m",
 				"user_name": "cccc",
-				"user_thumbnail": ""
+				"user_thumbnail": "",
+				"is_mine": true
 			}
 		]
 	}
@@ -181,6 +193,11 @@
 
 ### `POST /api/project/{project_idx}/version/{version_idx}/opinion/create`
 
+### Webhook
+
+- event: opinion
+- action: create
+
 ### permission
 
 - `permission.create_opinion`
@@ -192,6 +209,7 @@
 | project_idx     | path  |     integer      |    O     |                                   |
 | version_idx     | path  |     integer      |    O     |                                   |
 | opinion         | query |      string      |    O     |                                   |
+| translation     | query |      string      |    X     |                                   |
 | attached[]      | query |  array of file   |    X     |                                   |
 | is_annotation[] | query | array of integer |    X     | 1 - 어노테이션 / 0 - 일반 업로드  |
 | location        | query |      string      |    O     | 'overview', 'mytask', 'track' ... |
@@ -202,7 +220,67 @@
 {
 	"error": {
 		"code": 200,
-		"message": "의견이 등록 되었습니다."
+		"message": "의견이 등록됐습니다."
+	},
+	"data": {
+		"opinion": {
+			"idx": "7"
+		}
+	}
+}
+```
+
+## 4. 의견 수정 <a id="task-detail-opinion-update"></a>
+
+### `POST /api/project/{project_idx}/version/{version_idx}/opinion/{opinion_idx}/update`
+
+### permission
+
+- `permission.create_opinion`
+
+### request
+
+| param       | type  |  data   | required | desc                  |
+| ----------- | :---: | :-----: | :------: | --------------------- |
+| project_idx | path  | integer |    O     |                       |
+| version_idx | path  | integer |    O     |                       |
+| opinion_idx | path  | integer |    O     |                       |
+| column      | query | string  |    O     | opinion / translation |
+| new_val     | query | string  |    O     |                       |
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": null
+}
+```
+
+---
+
+## 5. 의견 삭제 <a id="task-detail-opinion-delete"></a>
+
+### `POST /api/project/{project_idx}/version/{version_idx}/opinion/{opinion_idx}/delete`
+
+### permission
+
+- `permission.create_opinion`
+
+### request
+
+| param       | type  |  data   | required | desc |
+| ----------- | :---: | :-----: | :------: | ---- |
+| project_idx | path  | integer |    O     |      |
+| version_idx | path  | integer |    O     |      |
+| opinion_idx | path  | integer |    O     |      |
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
 	},
 	"data": null
 }
@@ -215,3 +293,5 @@
 [의견 조회]: #task-detail-opinion-list
 [의견 계속 조회]: #task-detail-opinion-list-more
 [의견 추가]: #task-detail-opinion-create
+[의견 수정]: #task-detail-opinion-update
+[의견 삭제]: #task-detail-opinion-delete

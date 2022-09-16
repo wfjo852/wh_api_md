@@ -2,20 +2,30 @@
 
 ## 목차
 
-| 내용                              | slug                                            | 서버 구현 | 웹 적용 |
-| :-------------------------------- | :---------------------------------------------- | :-------: | :-----: |
-| 1. [웜홀 설치 프로그램 목록 조회] | /api/setting/list                               |     X     |    X    |
-| 2. [상태 코드 추가]               | /api/setting/status/create                      |   POST    |    O    |
-| 3. [상태 코드 수정]               | /api/setting/status/{status_idx}/update         |   POST    |    O    |
-| 4. [상태 코드 삭제]               | /api/setting/status/{status_idx}/delete         |   POST    |    O    |
-| 5. [상태 코드 목록 조회]          | /api/setting/status/list                        |    GET    |    O    |
-| 6. [포함 프로젝트 목록]           | /api/setting/status/{status_idx}/project/list   |    GET    |    O    |
-| 7. [포함 프로젝트 변경]           | /api/setting/status/{status_idx}/project/update |   POST    |    O    |
-| 8. [DB 유효성 체크]               | /api/setting/db/check                           |   POST    |    O    |
-| 9. [웜홀 시스템 버전 보기]        | /api/setting/system/version/read                |    GET    |    O    |
-| 10. [DB 버전 관련 밸리데이션 #1]  | /api/setting/db/version/case/1/validate         |   POST    |    O    |
-| 11. [DB 버전 관련 밸리데이션 #2]  | /api/setting/db/version/case/2/validate         |   POST    |    O    |
-| 12. [DB 버전 관련 밸리데이션 #3]  | /api/setting/db/version/case/3/validate         |   POST    |    O    |
+| 내용                              | slug                                            | 서버 구현 | 웹 적용 | 웹훅 | 로그 |
+|:----------------------------------|:------------------------------------------------|:---------:|:-------:|:----:|:----:|
+| 1. [웜홀 설치 프로그램 목록 조회] | /api/setting/list                               |     X     |    X    |  -   |  -   |
+| 2. [상태 코드 추가]               | /api/setting/status/create                      |   POST    |    O    |  -   |  -   |
+| 3. [상태 코드 수정]               | /api/setting/status/{status_idx}/update         |   POST    |    O    |  -   |  -   |
+| 4. [상태 코드 삭제]               | /api/setting/status/{status_idx}/delete         |   POST    |    O    |  -   |  -   |
+| 5. [상태 코드 목록 조회]          | /api/setting/status/list                        |    GET    |    O    |  -   |  -   |
+| 6. [포함 프로젝트 목록]           | /api/setting/status/{status_idx}/project/list   |    GET    |    O    |  -   |  -   |
+| 7. [포함 프로젝트 변경]           | /api/setting/status/{status_idx}/project/update |   POST    |    O    |  -   |  -   |
+| 8. [DB 유효성 체크]               | /api/setting/db/check                           |   POST    |    O    |  -   |  -   |
+| 9. [웜홀 시스템 버전 보기]        | /api/setting/system/version/read                |    GET    |    O    |  -   |  -   |
+| 10. [DB 버전 관련 밸리데이션 #1]  | /api/setting/db/version/case/1/validate         |   POST    |    O    |  -   |  -   |
+| 11. [DB 버전 관련 밸리데이션 #2]  | /api/setting/db/version/case/2/validate         |   POST    |    O    |  -   |  -   |
+| 12. [DB 버전 관련 밸리데이션 #3]  | /api/setting/db/version/case/3/validate         |   POST    |    O    |  -   |  -   |
+| 13. [작업내역 관련 밸리데이션]    | /api/setting/db/settlement/work_time/validate   |   POST    |    O    |  -   |  -   |
+| 14. [커스텀 컬럼 마이그레이션 #1] | /api/setting/db/custom/migrate/1                |   POST    |    O    |  -   |  -   |
+| 15. [커스텀 컬럼 마이그레이션 #2] | /api/setting/db/custom/migrate/2                |   POST    |    O    |  -   |  -   |
+| 16. [커스텀 컬럼 마이그레이션 #3] | /api/setting/db/custom/migrate/3                |   POST    |    O    |  -   |  -   |
+| 17. [커스텀 컬럼 마이그레이션 #4] | /api/setting/db/custom/migrate/4                |   POST    |    O    |  -   |  -   |
+| 18. [커스텀 컬럼 재정렬]          | /api/setting/db/custom/order/validate           |   POST    |    O    |  -   |  -   |
+| 19. [사용 중인 프로젝트 체크]     | /api/{which}/{which_idx}/used/check             |    GET    |    O    |  -   |  -   |
+| 20. [라이센스 수정]               | /api/setting/license/update                     |   POST    |    O    |  -   |  -   |
+| 21. [재로그인 안내]               | /api/setting/guide/credentials                  |    GET    |    O    |  -   |  -   |
+| 22. [상태코드 밸리데이션]         | /api/setting/status/validate                    |   POST    |    O    |  -   |  -   |
 
 ---
 
@@ -99,11 +109,11 @@
 ### request
 
 | param       | type  |  data   | required | desc             |
-| ----------- | :---: | :-----: | :------: | ---------------- |
+|-------------|:-----:|:-------:|:--------:|------------------|
 | status_name | query | string  |    O     |                  |
 | color       | query | string  |    O     |                  |
-| progress    | query | integer |    O     | 0 ~ 100 (진행률) |
-| description | query | string  |          |                  |
+| progress    | query | integer |    X     | 0 ~ 100 (진행률) |
+| description | query | string  |    X     |                  |
 
 ### response
 
@@ -114,7 +124,14 @@
 		"message": "상태 코드가 추가됐습니다."
 	},
 	"data": {
-		"status_idx": 9
+		"status": {
+			"idx": "17",
+			"name": "wait-b-team",
+			"description": "",
+			"pos": "8",
+			"color": "#333333",
+			"progress": "50"
+		}
 	}
 }
 ```
@@ -131,12 +148,12 @@
 
 ### request
 
-| param      | type  |  data   | required | desc                                       |
-| ---------- | :---: | :-----: | :------: | ------------------------------------------ |
-| status_idx | path  | integer |    O     |                                            |
-| column     | query | string  |    O     | statrus_name, color, progress, description |
-| old_val    | query | string  |    O     | 공백일 수는 있음                           |
-| new_val    | query | string  |    O     | 공백일 수는 있음                           |
+| param      | type  |  data   | required | desc                               |
+|------------|:-----:|:-------:|:--------:|------------------------------------|
+| status_idx | path  | integer |    O     |                                    |
+| column     | query | string  |    O     | name, color, progress, description |
+| old_val    | query | string  |    O     | 공백일 수는 있음                   |
+| new_val    | query | string  |    O     | 공백일 수는 있음                   |
 
 ### response
 
@@ -147,8 +164,14 @@
 		"message": "상태 코드가 수정됐습니다."
 	},
 	"data": {
-		"status_idx": 7,
-		"status_name": "working"
+		"status": {
+			"idx": "5",
+			"name": "final",
+			"description": null,
+			"pos": "5.1",
+			"color": "#607d8b",
+			"progress": "100"
+		}
 	}
 }
 ```
@@ -166,7 +189,7 @@
 ### request
 
 | param      | type |  data   | required | desc |
-| ---------- | :--: | :-----: | :------: | ---- |
+|------------|:----:|:-------:|:--------:|------|
 | status_idx | path | integer |    O     |      |
 
 ### response
@@ -194,7 +217,7 @@
 ### request
 
 | param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
+|-------|:----:|:----:|:--------:|------|
 | X     |  X   |  X   |    X     | X    |
 
 ### response
@@ -206,78 +229,47 @@
 		"message": "성공"
 	},
 	"data": {
-		"status_list": [
+		"statuses": [
 			{
-				"status_idx": "1",
-				"status_name": "wip",
-				"color": "#888888",
-				"progress": "100",
-				"description": null,
-				"project_list": [
+				"idx": "1",
+				"pos": "1",
+				"name": "wip",
+				"color": "#dbd8db",
+				"progress": "5",
+				"description": "123",
+				"projects": [
 					{
-						"project_idx": "1",
-						"name": "prjA"
+						"idx": "1",
+						"name": "Demo_Bigbuck_Bunny",
+						"description": "Demo_Bigbuck_Bunny",
+						"start_date": "2018-12-11",
+						"end_date": "2019-04-12"
+					}
+				]
+			},
+			{
+				"idx": "2",
+				"pos": "2",
+				"name": "confirmm",
+				"color": "#03a9f4",
+				"progress": "30",
+				"description": "44",
+				"projects": [
+					{
+						"idx": "1",
+						"name": "Demo_Bigbuck_Bunny",
+						"description": "Demo_Bigbuck_Bunny",
+						"start_date": "2018-12-11",
+						"end_date": "2019-04-12"
 					},
 					{
-						"project_idx": "2",
-						"name": "Popo Cuca"
+						"idx": "2",
+						"name": "Project A",
+						"description": "for A",
+						"start_date": "2018-12-11",
+						"end_date": "2019-04-12"
 					}
 				]
-			},
-			{
-				"status_idx": "2",
-				"status_name": "confirm",
-				"color": "#888888",
-				"progress": "100",
-				"description": null,
-				"project_list": [
-					{
-						"project_idx": "1",
-						"name": "prjA"
-					},
-					{
-						"project_idx": "2",
-						"name": "Popo Cuca"
-					}
-				]
-			},
-			{
-				"status_idx": "3",
-				"status_name": "retake",
-				"color": "#888888",
-				"progress": "100",
-				"description": null,
-				"project_list": [
-					{
-						"project_idx": "1",
-						"name": "prjA"
-					},
-					{
-						"project_idx": "2",
-						"name": "Popo Cuca"
-					}
-				]
-			},
-			{
-				"status_idx": "4",
-				"status_name": "pub",
-				"color": "#888888",
-				"progress": "100",
-				"description": null,
-				"project_list": [
-					{
-						"project_idx": "1",
-						"name": "prjA"
-					}
-				]
-			},
-			{
-				"status_idx": "5",
-				"status_name": "final",
-				"color": "#888888",
-				"progress": "100",
-				"description": null,
-				"project_list": null
 			}
 		]
 	}
@@ -297,7 +289,7 @@
 ### request
 
 | param      | type |  data   | required | desc |
-| ---------- | :--: | :-----: | :------: | ---- |
+|------------|:----:|:-------:|:--------:|------|
 | status_idx | path | integer |    O     |      |
 
 ### response
@@ -341,11 +333,11 @@
 
 ### request
 
-| param                        | type  |       data       | required | desc |
-| ---------------------------- | :---: | :--------------: | :------: | ---- |
-| status_idx                   | path  |     integer      |    O     |      |
-| project_idx_with_status[]    | query | array of integer |    O     |      |
-| project_idx_without_status[] | query | array of integer |    O     |      |
+| param                     | type  |       data       | required | desc |
+|---------------------------|:-----:|:----------------:|:--------:|------|
+| status_idx                | path  |     integer      |    O     |      |
+| project_idx_with_status[] | query | array of integer |    O     |      |
+| add_project_name[]        | query | array of string  |    X     |      |
 
 ### response
 
@@ -383,7 +375,7 @@
 ### request
 
 | param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
+|-------|:----:|:----:|:--------:|------|
 | x     |  x   |  x   |    x     | x    |
 
 ### response
@@ -411,7 +403,7 @@
 ### request
 
 | param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
+|-------|:----:|:----:|:--------:|------|
 | x     |  x   |  x   |    x     | x    |
 
 ### response
@@ -442,7 +434,7 @@
 ### request
 
 | param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
+|-------|:----:|:----:|:--------:|------|
 | x     |  x   |  x   |    x     | x    |
 
 ### response
@@ -470,7 +462,7 @@
 ### request
 
 | param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
+|-------|:----:|:----:|:--------:|------|
 | x     |  x   |  x   |    x     | x    |
 
 ### response
@@ -498,7 +490,7 @@
 ### request
 
 | param | type | data | required | desc |
-| ----- | :--: | :--: | :------: | ---- |
+|-------|:----:|:----:|:--------:|------|
 | x     |  x   |  x   |    x     | x    |
 
 ### response
@@ -515,6 +507,294 @@
 
 ---
 
+## 13. 작업내역 관련 밸리데이션 <a id="db-settlement-work_time-validate"></a>
+
+### `POST /api/setting/db/settlement/work_time/validate`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     | x    |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "유효성 검증 작업을 했습니다."
+	},
+	"data": null
+}
+```
+
+---
+
+## 14. 커스텀 컬럼 마이그레이션 #1 <a id="db-custom-migrate-1"></a>
+
+### `POST /api/setting/db/custom/migrate/1`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    X     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": {
+		"custom_tables": ["asset_custom", "episode_custom", "shot_custom"]
+	}
+}
+```
+
+---
+
+## 15. 커스텀 컬럼 마이그레이션 #2 <a id="db-custom-migrate-2"></a>
+
+### `POST /api/setting/db/custom/migrate/2`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param          | type  |      data       | required | desc |
+|----------------|:-----:|:---------------:|:--------:|------|
+| custom_columns | query | array of string |    x     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": null
+}
+```
+
+---
+
+## 16. 커스텀 컬럼 마이그레이션 #3 <a id="db-custom-migrate-3"></a>
+
+### `POST /api/setting/db/custom/migrate/3`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": {
+		"pass": "ok"
+	}
+}
+```
+
+- pass가 "ok"일 경우에만 17번 api를 호출 함
+
+---
+
+## 17. 커스텀 컬럼 마이그레이션 #4 <a id="db-custom-migrate-4"></a>
+
+### `POST /api/setting/db/custom/migrate/4`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     |      |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": null
+}
+```
+
+---
+
+## 18. 커스텀 컬럼 재 정렬 <a id="db-custom-order-validate"></a>
+
+### `POST /api/setting/db/custom/order/validate`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     | x    |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "커스텀 컬럼을 성공적으로 정렬했습니다."
+	},
+	"data": null
+}
+```
+
+## 19. 사용 중인 프로젝트 체크 <a id="used-check"></a>
+
+### `GET /api/{which}/{which_idx}/used/check`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param     | type |  data   | required | desc                  |
+|-----------|:----:|:-------:|:--------:|-----------------------|
+| which     | path | string  |    O     | 지원 엘리먼트: status |
+| which_idx | path | integer |    O     |                       |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "성공"
+	},
+	"data": {
+		"projects": [
+			{
+				"idx": "1",
+				"name": "Demo Big Bunny"
+			},
+			{
+				"idx": "2",
+				"name": "Holly Molly"
+			}
+		]
+	}
+}
+```
+
+## 20. 라이센스 수정 <a id="license-update"></a>
+
+### `POST /api/license/update`
+
+### permission
+
+- `permission.do_global_setting`
+
+### request
+
+| param       | type  |  data  | required | desc        |
+|-------------|:-----:|:------:|:--------:|-------------|
+| license_key | query | string |    O     | 라이센스 키 |
+
+### response
+
+```json
+{
+	"error": {
+		"code": 200,
+		"message": "라이센스를 갱신했습니다."
+	},
+	"data": null
+}
+```
+
+## 21. 재로그인 안내 <a id="guide-credentials"></a>
+
+### `POST /api/setting/guide/credentials`
+
+### permission
+
+- all
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     | x    |
+
+### response
+
+```json
+{
+  "error": {
+    "code": 401,
+    "message": "Your authentification token is expired. Please check your credentials again."
+  },
+  "data": null
+}
+```
+
+## 22. 상태코드 밸리데이션 <a id="status-validate"></a>
+
+### `POST /api/setting/status/validate`
+
+### permission
+
+- all
+
+### request
+
+| param | type | data | required | desc |
+|-------|:----:|:----:|:--------:|------|
+| x     |  x   |  x   |    x     | x    |
+
+### response
+
+```json
+{
+  "error": {
+    "code": 200,
+    "message": "성공"
+  },
+  "data": null
+}
+```
+
 ## 끝
 
 [웜홀 설치 프로그램 목록 조회]: #settting-list
@@ -529,3 +809,12 @@
 [db 버전 관련 밸리데이션 #1]: #db-version-case1-validate
 [db 버전 관련 밸리데이션 #2]: #db-version-case2-validate
 [db 버전 관련 밸리데이션 #3]: #db-version-case3-validate
+[커스텀 컬럼 마이그레이션 #1]: #db-custom-migrate-1
+[커스텀 컬럼 마이그레이션 #2]: #db-custom-migrate-2
+[커스텀 컬럼 마이그레이션 #3]: #db-custom-migrate-3
+[커스텀 컬럼 마이그레이션 #4]: #db-custom-migrate-4
+[커스텀 컬럼 재정렬]: #db-custom-order-validate
+[사용 중인 프로젝트 체크]: #used-check
+[라이센스 수정]: #license-update
+[재로그인 안내]: #guide-credentials
+[상태코드 밸리데이션]: #status-validate

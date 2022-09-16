@@ -2,10 +2,10 @@
 
 ## 목차
 
-| 내용                         | slug                                               | 서버 구현 | 웹 적용 |
-| :--------------------------- | :------------------------------------------------- | :-------: | :-----: |
-| 1. [데일리 태스크 통계 갱신] | /api/stats/daily_task/update                       |   POST    |    O    |
-| 2. [데일리 태스크 통계 보기] | /api/stats/daily_task/{date}/read                  |    GET    |    O    |
+| 내용                         | slug                              | 서버 구현 | 웹 적용 | 웹훅 | 로그 |
+| :--------------------------- | :-------------------------------- | :-------: | :-----: | :--: | :--: |
+| 1. [데일리 태스크 통계 갱신] | /api/stats/daily_task/update      |   POST    |    O    |  -   |  -   |
+| 2. [데일리 태스크 통계 보기] | /api/stats/daily_task/{date}/read |    GET    |    O    |  -   |  -   |
 
 ## 0. 참고
 
@@ -52,9 +52,9 @@
 
 ### request
 
-| param | type |  data  | required | desc       |
-| ----- | :--: | :----: | :------: | ---------- |
-| date  | path | string |    O     | YYYY-MM-DD |
+| param | type | data | required | desc       |
+| ----- | :--: | :--: | :------: | ---------- |
+| date  | path | date |    O     | YYYY-MM-DD |
 
 ### response
 
